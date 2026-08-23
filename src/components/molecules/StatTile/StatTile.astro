@@ -1,0 +1,19 @@
+---
+// One cell in the 4-up strip. The grid that contains a row of these owns the
+// border-top/border-bottom of --bd2 — not this component's concern.
+interface Props {
+  index: string;
+  value: string;
+  label: string;
+  class?: string;
+}
+
+const { index, value, label, class: className } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-[10px] border-l border-l-bd px-6 pt-[28px] pb-[26px]', className]}>
+  <p class="text-label-sm tracking-caps-wide text-ac">{index}</p>
+  <p class="font-display text-[clamp(17px,1.9vw,23px)] font-bold leading-[1.15] tracking-[-.03em] text-fg">{value}</p>
+  <p class="text-label-sm uppercase tracking-[.13em] text-fg3">{label}</p>
+  <p class="text-ui leading-[1.7] text-fg2"><slot /></p>
+</div>

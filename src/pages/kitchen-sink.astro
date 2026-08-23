@@ -7,6 +7,14 @@ import Badge from '../components/atoms/Badge/Badge.astro';
 import Caret from '../components/atoms/Caret/Caret.astro';
 import NavLink from '../components/atoms/NavLink/NavLink.astro';
 import TabButton from '../components/atoms/TabButton/TabButton.astro';
+import Panel from '../components/molecules/Panel/Panel.astro';
+import SectionHeader from '../components/molecules/SectionHeader/SectionHeader.astro';
+import StatTile from '../components/molecules/StatTile/StatTile.astro';
+import MetaRow from '../components/molecules/MetaRow/MetaRow.astro';
+import TerminalLine from '../components/molecules/TerminalLine/TerminalLine.astro';
+import ScreenshotFrame from '../components/molecules/ScreenshotFrame/ScreenshotFrame.astro';
+import ThemeToggle from '../components/molecules/ThemeToggle/ThemeToggle.astro';
+import Monogram from '../components/molecules/Monogram/Monogram.astro';
 ---
 
 <BaseLayout title="Kitchen sink">
@@ -73,6 +81,71 @@ import TabButton from '../components/atoms/TabButton/TabButton.astro';
         <TabButton active count="06">active tab</TabButton>
         <TabButton primary count="11">primary tab</TabButton>
         <TabButton count="03">inactive tab</TabButton>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">panel</h2>
+      <div class="flex flex-wrap gap-4">
+        <Panel label="note" class="max-w-[320px]">
+          Frontend engineering is my specialty. Full-stack and AI expand what I can build.
+        </Panel>
+        <Panel label="emphasis" accentRule class="max-w-[320px]">
+          Accent-ruled panel — the left border is 3px instead of a hairline.
+        </Panel>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">sectionheader</h2>
+      <SectionHeader index="01" title="about" meta="background.md" />
+      <SectionHeader index="02" title="skills" strong />
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">stattile</h2>
+      <div class="grid grid-cols-4 border-t border-b border-t-bd2 border-b-bd2">
+        <StatTile index="01" value="11" label="roles">7+ years across product and platform teams.</StatTile>
+        <StatTile index="02" value="06" label="domains">Frontend, full-stack, AI, and infra.</StatTile>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">metarow</h2>
+      <div class="max-w-[420px]">
+        <MetaRow term="role" value="senior frontend engineer" />
+        <MetaRow term="location" value="alexandria, egypt" />
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">terminalline</h2>
+      <div class="flex flex-col gap-1">
+        <TerminalLine mark="$" tail="ok">whoami</TerminalLine>
+        <TerminalLine mark=">" strong tail="ready">booting profile</TerminalLine>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">screenshotframe</h2>
+      <div class="max-w-[360px]">
+        <ScreenshotFrame path="~/work/project.png" caption="Dashboard overview" ratio="4/3" />
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">themetoggle</h2>
+      <div class="flex gap-3">
+        <ThemeToggle theme="dark" />
+        <ThemeToggle theme="light" />
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">monogram</h2>
+      <div class="flex items-center gap-4">
+        <Monogram size="header" />
+        <Monogram size="footer" />
       </div>
     </section>
   </main>

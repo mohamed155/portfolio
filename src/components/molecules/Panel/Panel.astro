@@ -1,0 +1,28 @@
+---
+// `accentRule` swaps the 1px left border for the 3px accent rule used on
+// emphasis panels — the other three sides stay a plain 1px hairline either way.
+interface Props {
+  label?: string;
+  accentRule?: boolean;
+  background?: 'panel' | 'panel2' | 'bg';
+  class?: string;
+}
+
+const { label, accentRule = false, background = 'panel', class: className } = Astro.props;
+
+const bgClass = { panel: 'bg-panel', panel2: 'bg-panel2', bg: 'bg-bg' }[background];
+---
+
+<div
+  class:list={[
+    'border-t border-r border-b border-bd py-[18px] px-5',
+    accentRule ? 'border-l-[3px] border-l-ac' : 'border-l border-l-bd',
+    bgClass,
+    className,
+  ]}
+>
+  {label && <p class="text-[10px] uppercase tracking-caps-wide text-ac">{label}</p>}
+  <div class:list={[label && 'mt-[9px]', 'text-body-sm leading-[1.75] text-fg2']}>
+    <slot />
+  </div>
+</div>
