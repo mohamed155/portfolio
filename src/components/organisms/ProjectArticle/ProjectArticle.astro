@@ -1,0 +1,45 @@
+---
+import ScreenshotFrame from '../../molecules/ScreenshotFrame/ScreenshotFrame.astro';
+import Panel from '../../molecules/Panel/Panel.astro';
+import Chip from '../../atoms/Chip/Chip.astro';
+import Button from '../../atoms/Button/Button.astro';
+
+interface Props {
+  index: string;
+  kind: string;
+  title: string;
+  slug: string;
+  path: string;
+  shot: string;
+  description: string;
+  contribution: string;
+  tech: string[];
+  flip?: boolean;
+}
+
+const { index, kind, title, slug, path, shot, description, contribution, tech, flip = false } = Astro.props;
+---
+
+<article class="grid grid-cols-[1fr_1fr] items-start gap-[52px] pb-[76px] to-xl:grid-cols-1 to-xl:gap-8">
+  <div class:list={[flip ? 'order-2' : 'order-1', 'to-xl:order-1']}>
+    <div class="mb-4 flex flex-wrap items-baseline gap-[14px]">
+      <span class="font-display text-[clamp(30px,4vw,54px)] font-bold leading-none tracking-[-.04em] text-ac">{index}</span>
+      <span class="text-label-sm uppercase tracking-caps-wide text-fg3">{kind}</span>
+    </div>
+    <h3 class="font-display text-h3 font-bold leading-[1.15] tracking-heading text-fg">{title}</h3>
+    <p class="mt-4 max-w-[56ch] text-body leading-[1.85] text-fg2">{description}</p>
+    <div class="mt-6">
+      <Panel label="key contribution" accentRule>{contribution}</Panel>
+    </div>
+    <div class="mt-[22px] flex flex-wrap gap-[6px]">
+      {tech.map((t) => <Chip size="sm">{t}</Chip>)}
+    </div>
+    <div class="mt-[26px]">
+      <Button href={`/work/${slug}`}>view case study &rarr;</Button>
+    </div>
+  </div>
+
+  <div class:list={[flip ? 'order-1' : 'order-2', 'to-xl:order-2']}>
+    <ScreenshotFrame path={path} caption={shot} ratio="4/3" />
+  </div>
+</article>

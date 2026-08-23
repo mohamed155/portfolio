@@ -1,0 +1,46 @@
+---
+import Caret from '../../atoms/Caret/Caret.astro';
+import Button from '../../atoms/Button/Button.astro';
+import Panel from '../../molecules/Panel/Panel.astro';
+import ProfilePanel from '../ProfilePanel/ProfilePanel.astro';
+import HighlightsStrip from '../HighlightsStrip/HighlightsStrip.astro';
+---
+
+<section id="top" data-section="01 about" class="pt-[72px]">
+  <div class="flex items-center gap-2 text-[11.5px] uppercase tracking-caps text-fg3">
+    <span class="text-ac">$</span><span>whoami</span><Caret />
+  </div>
+
+  <h1 class="mt-[22px] font-display text-hero font-bold uppercase leading-[.92] tracking-hero">
+    MOHAMED<br />RAMADAN
+  </h1>
+
+  <div class="mt-[26px] flex flex-wrap items-baseline gap-[14px] border-b border-b-bd2 pb-[26px]">
+    <span class="text-lead tracking-ui text-ac">senior frontend engineer</span>
+    <span class="text-[clamp(13px,1.5vw,17px)] text-fg3">// building scalable digital experiences</span>
+  </div>
+
+  <div class="grid grid-cols-[1.15fr_.85fr] items-start gap-[56px] pt-9 pb-16 to-xl:grid-cols-1 to-xl:gap-10">
+    <div>
+      <p class="max-w-[62ch] text-[clamp(14px,1.15vw,16px)] leading-[1.85] text-fg2">
+        I architect and build modern web applications with a strong focus on frontend architecture,
+        performance, maintainability, accessibility, and user experience — supported by full-stack
+        and AI engineering skills.
+      </p>
+
+      <div class="mt-[28px] max-w-[62ch]">
+        <Panel label="note">&ldquo;Frontend engineering is my specialty. Full-stack and AI expand what I can build.&rdquo;</Panel>
+      </div>
+
+      <div class="mt-[28px] flex flex-wrap gap-[10px]">
+        <Button href="#work">explore work &rarr;</Button>
+        <Button variant="outline">download resume</Button>
+        <Button variant="ghost" href="#contact">let&rsquo;s talk</Button>
+      </div>
+    </div>
+
+    <ProfilePanel />
+  </div>
+
+  <HighlightsStrip />
+</section>

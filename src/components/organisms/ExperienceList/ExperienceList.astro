@@ -1,0 +1,35 @@
+---
+// Owns the role history. Only 3 of the 11 roles implied by the "11 roles ·
+// 7+ yrs" meta are known content (from the design source) — the rest must
+// come from the user before this ships. Do not invent them.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+import ExperienceRow from '../ExperienceRow/ExperienceRow.astro';
+
+const ROLES = [
+  {
+    index: '01', dates: 'dec 2025 — present', place: 'Alexandria / Zurich',
+    company: 'eSpace / Crealogix', title: 'Senior Frontend Engineer', current: true,
+    summary: 'Building desktop and mobile e-banking web applications for Saudi National Bank clients, with the accessibility, correctness and browser-support constraints that regulated banking interfaces require.',
+    tech: ['Angular', 'TypeScript', 'RxJS', 'Design Systems'],
+  },
+  {
+    index: '02', dates: 'mar 2024 — sep 2025', place: 'El-Gouna',
+    company: 'Intouch.com', title: 'Senior Software Engineer',
+    summary: 'Led frontend work on an advertising media player and its retailer/ads portal, including camera integration and an in-browser TensorFlow model for audience demographics and ad-view counting.',
+    tech: ['Angular', 'TypeScript', 'TensorFlow.js', 'NgRx'],
+  },
+  {
+    index: '03', dates: 'nov 2021 — oct 2023', place: 'Australia',
+    company: 'Optus', title: 'Senior Frontend Developer',
+    summary: 'Progressed through frontend and mobile roles across telecom product surfaces, working in Angular on the web and Flutter on mobile.',
+    tech: ['Angular', 'TypeScript', 'Flutter', 'SignalR'],
+  },
+];
+---
+
+<section id="experience" data-section="03 experience" class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="03" title="experience" meta="11 roles · 7+ yrs" class="mb-2" />
+  <ol class="m-0 list-none p-0">
+    {ROLES.map((r) => <ExperienceRow {...r} />)}
+  </ol>
+</section>

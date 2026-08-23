@@ -1,0 +1,35 @@
+---
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+import Badge from '../../atoms/Badge/Badge.astro';
+import Button from '../../atoms/Button/Button.astro';
+
+const EMAIL = 'mohamedahmedramadan154@gmail.com';
+---
+
+<section id="contact" data-section="07 contact" class="pb-24">
+  <SectionHeader index="07" title="contact" class="mb-12" />
+
+  <h2 class="max-w-[22ch] font-display text-display font-bold uppercase leading-none tracking-hero">
+    Let&rsquo;s build something great.
+  </h2>
+
+  <p class="mt-[26px] max-w-[56ch] text-body-lg leading-[1.85] text-fg2">
+    I&rsquo;m open to senior frontend engineering opportunities and challenging product work.
+  </p>
+
+  <div class="mt-5">
+    <Badge variant="status">open to work</Badge>
+  </div>
+
+  <a
+    href={`mailto:${EMAIL}`}
+    class="mt-[26px] inline-block break-all text-[clamp(13px,2.2vw,26px)] tracking-title text-ac border-b border-b-bd2"
+  >{EMAIL}</a>
+
+  <div class="mt-10 flex flex-wrap gap-[10px]">
+    <Button href={`mailto:${EMAIL}`}>email me &rarr;</Button>
+    <Button variant="outline" href="https://linkedin.com/in/mohamedahmed-ramadan" target="_blank" rel="noopener noreferrer">linkedin &#8599;</Button>
+    <Button variant="outline" href="https://github.com/mohamed155" target="_blank" rel="noopener noreferrer">github &#8599;</Button>
+    <Button variant="ghost" href="/resume">resume &#8599;</Button>
+  </div>
+</section>

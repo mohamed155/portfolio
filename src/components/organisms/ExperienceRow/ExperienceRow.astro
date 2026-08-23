@@ -1,0 +1,43 @@
+---
+// Organism, not molecule — it's a 4-column compound with its own hover
+// behaviour and composes Chip + Badge, per atomic-map.md.
+import Chip from '../../atoms/Chip/Chip.astro';
+import Badge from '../../atoms/Badge/Badge.astro';
+
+interface Props {
+  index: string;
+  dates: string;
+  place: string;
+  company: string;
+  title: string;
+  summary: string;
+  tech?: string[];
+  current?: boolean;
+}
+
+const { index, dates, place, company, title, summary, tech = [], current = false } = Astro.props;
+---
+
+<li class="group list-none border-b border-b-bd bg-transparent transition-colors duration-200 hover:bg-panel">
+  <div class="grid grid-cols-[40px_200px_240px_1fr] items-start gap-[26px] px-2 py-6 to-lg:grid-cols-[40px_1fr] to-sm:grid-cols-1">
+    <span class="pt-[3px] text-[11px] tracking-[.08em] text-fg3 transition-colors duration-200 group-hover:text-ac">{index}</span>
+
+    <span>
+      <span class="block text-ui-sm tracking-nav text-fg2">{dates}</span>
+      <span class="mt-[6px] block text-[11px] tracking-nav text-fg3">{place}</span>
+      {current && <span class="mt-[9px] inline-block"><Badge>current</Badge></span>}
+    </span>
+
+    <span class="to-lg:col-start-2">
+      <span class="block font-display text-title font-bold tracking-title text-fg">{company}</span>
+      <span class="mt-[7px] block text-ui leading-[1.6] text-ac">{title}</span>
+    </span>
+
+    <span class="to-lg:col-span-2 to-sm:col-span-1">
+      <span class="block max-w-[62ch] text-body-sm leading-[1.8] text-fg2">{summary}</span>
+      <span class="mt-[14px] flex flex-wrap gap-[6px]">
+        {tech.map((t) => <Chip size="sm" variant="quiet">{t}</Chip>)}
+      </span>
+    </span>
+  </div>
+</li>

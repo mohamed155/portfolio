@@ -33,6 +33,17 @@ const { title, description } = Astro.props;
   </head>
   <body>
     <slot />
+
+    <script>
+      import '../lib/reveal';
+
+      // BootSequence's cold-load gate needs to tell a fresh visit from a
+      // View-Transitions navigation — sessionStorage alone can't, since
+      // Astro keeps the document alive across navigations.
+      document.addEventListener('astro:after-swap', () => {
+        sessionStorage.setItem('mr-navigated', '1');
+      });
+    </script>
   </body>
 </html>
 

@@ -27,6 +27,7 @@ export default function HeaderIsland({ active }: { active?: string }) {
   const [menu, setMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -44,8 +45,22 @@ export default function HeaderIsland({ active }: { active?: string }) {
 
   useEffect(() => {
     document.body.style.overflow = menu ? 'hidden' : '';
-    if (!menu) trigger.current?.focus();
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenu(false); };
+    if (!menu) {
+      trigger.current?.focus();
+      return;
+    }
+
+    const focusables = overlay.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+    focusables?.[0]?.focus();
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') { setMenu(false); return; }
+      if (e.key !== 'Tab' || !focusables?.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
     window.addEventListener('keydown', onKey);
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
   }, [menu]);
@@ -96,6 +111,11 @@ export default function HeaderIsland({ active }: { active?: string }) {
             <span className="to-xs:hidden">{theme === 'light' ? 'paper' : 'dark'}</span>
           </button>
 
+          <a
+            href="/resume"
+            className="inline-flex h-8 items-center border border-bd px-[11px] text-[11px] uppercase tracking-[.08em] text-fg2 transition-colors duration-200 hover:border-ac hover:text-ac to-xs:hidden"
+          >resume &#8599;</a>
+
           <button
             ref={trigger}
             type="button"
@@ -108,7 +128,7 @@ export default function HeaderIsland({ active }: { active?: string }) {
       </div>
 
       {menu && (
-        <div className="fixed inset-0 z-90 animate-fadein bg-bg px-4.5 py-6">
+        <div ref={overlay} role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-90 animate-fadein bg-bg px-4.5 py-6">
           <button
             type="button"
             onClick={() => setMenu(false)}

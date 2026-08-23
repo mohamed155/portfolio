@@ -1,11 +1,30 @@
 ---
-// Level 0 placeholder. Real hero content lands at Level 5 — this page exists
-// only to prove the foundation (theme, fonts, tokens) renders correctly.
+// Home. Runs the boot sequence. Chrome (Header/Footer/StatusBar) is inlined
+// here for now — PageLayout doesn't exist yet (Level 4); this page will
+// move to composing PageLayout once that lands, without changing content.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BootSequence from '../components/organisms/BootSequence/BootSequence.astro';
+import Header from '../components/organisms/Header/Header.astro';
+import Hero from '../components/organisms/Hero/Hero.astro';
+import Capabilities from '../components/organisms/Capabilities/Capabilities.astro';
+import ExperienceList from '../components/organisms/ExperienceList/ExperienceList.astro';
+import SelectedWork from '../components/organisms/SelectedWork/SelectedWork.astro';
+import ContactSection from '../components/organisms/ContactSection/ContactSection.astro';
+import Footer from '../components/organisms/Footer/Footer.astro';
+import StatusBar from '../components/organisms/StatusBar/StatusBar.astro';
 ---
 
-<BaseLayout title="Mohamed Ramadan">
-  <main class="flex min-h-screen items-center justify-center bg-bg text-fg">
-    <p class="font-body text-body">hello</p>
+<BaseLayout title="Mohamed Ramadan — Senior Frontend Engineer" description="Senior frontend engineer specializing in Angular, frontend architecture, and scalable design systems.">
+  <BootSequence />
+  <Header active="about" />
+  <main class="mx-auto max-w-page px-8 pt-header to-xs:px-[18px]">
+    <Hero />
+    <Capabilities />
+    <ExperienceList />
+    <SelectedWork />
+    <ContactSection />
   </main>
+  <Footer />
+  <div class="h-statusbar to-sm:h-0" aria-hidden="true"></div>
+  <StatusBar />
 </BaseLayout>

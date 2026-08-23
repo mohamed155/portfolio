@@ -1,15 +1,20 @@
 ---
 interface Props {
-  mark: string;
+  mark?: string;
   strong?: boolean;
   tail?: string;
   class?: string;
 }
 
-const { mark, strong = false, tail, class: className } = Astro.props;
+const { mark = '>', strong = false, tail, class: className } = Astro.props;
 ---
 
-<div class:list={['flex items-baseline gap-3 text-body-xs leading-[1.9] tracking-ui', className]}>
+<div
+  class:list={[
+    'flex items-baseline gap-3 text-body-xs leading-[1.9] tracking-ui animate-[fadein_.12s_linear_both]',
+    className,
+  ]}
+>
   <span class="text-ac" aria-hidden="true">{mark}</span>
   <span class:list={[strong ? 'text-fg' : 'text-fg2']}><slot /></span>
   {tail && <span class="ml-auto text-fg3">{tail}</span>}

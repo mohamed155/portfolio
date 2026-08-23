@@ -1,0 +1,10 @@
+---
+// Home page only, must run before first meaningful paint. client:only, not
+// client:load: this component decides whether to render at all from
+// sessionStorage/matchMedia, so its first real render must be the client's —
+// SSR-ing a guess and correcting it on hydrate is a hydration-mismatch bug
+// (see interactivity.md).
+import BootSequenceIsland from './BootSequence.island.tsx';
+---
+
+<BootSequenceIsland client:only="react" />
