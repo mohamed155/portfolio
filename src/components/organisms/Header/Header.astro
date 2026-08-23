@@ -1,0 +1,14 @@
+---
+// Theme + mobile menu must respond immediately, and the flash is already
+// prevented by BaseLayout's blocking head script — client:load per
+// interactivity.md.
+import HeaderIsland from './Header.island.tsx';
+
+interface Props {
+  active?: string;
+}
+
+const { active } = Astro.props;
+---
+
+<HeaderIsland client:load active={active} />

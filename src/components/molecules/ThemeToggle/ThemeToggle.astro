@@ -1,9 +1,12 @@
 ---
 // Presentational only — no ThemeToggle.island.tsx exists. State belongs to
-// Header, which hand-rolls the equivalent interactive markup in JSX because
-// a React island cannot import an .astro component.
-import Button from '../../atoms/Button/Button.astro';
-
+// Header, which hand-rolls this exact markup in JSX because a React island
+// cannot import an .astro component (see Header.island.tsx).
+//
+// Deliberately NOT composed from Button: the design source's own
+// ThemeToggle.jsx specifies gap-2 (8px), not the 10px Button uses — a real
+// spec difference, not an oversight. Matches Button's quiet/sm sizing and
+// hover behaviour otherwise.
 interface Props {
   theme: 'dark' | 'light';
   class?: string;
@@ -12,7 +15,14 @@ interface Props {
 const { theme, class: className } = Astro.props;
 ---
 
-<Button variant="quiet" size="sm" class={className}>
+<button
+  type="button"
+  aria-label="Toggle colour theme"
+  class:list={[
+    'inline-flex h-8 items-center gap-2 border border-bd px-[11px] text-[11px] uppercase tracking-[.08em] text-fg2 transition-colors duration-200 hover:border-ac hover:text-ac',
+    className,
+  ]}
+>
   <span class="h-2 w-2 flex-none bg-ac" aria-hidden="true"></span>
   <span class="to-xs:hidden">{theme === 'light' ? 'paper' : 'dark'}</span>
-</Button>
+</button>

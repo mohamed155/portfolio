@@ -1,0 +1,24 @@
+---
+// Right-hand column of the hero: availability badge + a fixed set of
+// key/value facts. Content is personal-site copy, not a prop surface —
+// there is only ever one profile.
+import Badge from '../../atoms/Badge/Badge.astro';
+import MetaRow from '../../molecules/MetaRow/MetaRow.astro';
+
+const META: [string, string][] = [
+  ['role', 'senior frontend engineer'],
+  ['specialty', 'frontend architecture · angular'],
+  ['current', 'eSpace / Crealogix — SNB e-banking'],
+  ['location', 'alexandria, egypt · remote-friendly'],
+  ['supporting', 'node · nestjs · rust · llm integration'],
+  ['education', 'b.sc. computer science, alexandria university'],
+];
+---
+
+<div>
+  <div class="flex items-center justify-between gap-3 border-b border-b-bd pb-[10px] text-[10px] uppercase tracking-caps-wide text-fg3">
+    <span>profile</span>
+    <Badge variant="status">available</Badge>
+  </div>
+  {META.map(([term, value]) => <MetaRow term={term} value={value} />)}
+</div>

@@ -6,8 +6,14 @@ Four behaviours need JavaScript. Everything else is static `.astro`.
 | --- | --- | --- | --- |
 | Theme + mobile menu | `Header.island.tsx` | `client:load` | Toggle must respond immediately; the flash is already prevented by the head script |
 | Capability tabs | `Capabilities.island.tsx` | `client:visible` | Below the fold on every viewport |
-| Boot sequence | `BootSequence.island.tsx` | `client:load` | Must run before first meaningful paint, home page only |
+| Boot sequence | `BootSequence.island.tsx` | `client:only="react"` | Decides whether to render at all from `sessionStorage`/`matchMedia` — see the hydration-mismatch note below |
 | Scroll status bar | `StatusBar.island.tsx` | `client:idle` | Cosmetic; never blocks interaction |
+
+## Boot sequence must be `client:only`, not `client:load`
+
+`client:load` still server-renders the component once before hydrating it. A `useState` initializer that branches on `typeof window === 'undefined'` to decide whether to render therefore produces **different output on the server than on the client's first render** — the server takes the `undefined` branch, the client immediately evaluates the real condition. React throws a hydration-mismatch error for exactly this pattern (it's one of the causes listed in React's own mismatch warning: "A server/client branch `if (typeof window !== 'undefined')`"). Discovered building Level 3 — the first real page assembly threw this on every load.
+
+`client:only="react"` skips the SSR pass for this component entirely, so there's nothing to mismatch against — the `window`/`sessionStorage`/`matchMedia` checks in the initializer are then safe exactly as written below. The tradeoff is that the underlying page (which *does* SSR normally) is visible for a brief moment before the boot overlay mounts and covers it; for a full-page takeover overlay that only exists on JS-enabled cold loads of `/`, that's the right side of the tradeoff.
 
 ## View Transitions will replay your mount effects
 
@@ -16,9 +22,9 @@ Astro keeps the document alive across navigations, so an animation in `useEffect
 **Gate the boot sequence.** It runs only on a direct load of `/`. `sessionStorage` is not enough on its own — the check must also exclude transition-driven navigation.
 
 ```tsx
-// BootSequence.island.tsx
+// BootSequence.island.tsx — rendered client:only, so there's no SSR pass to
+// mismatch against and branching on window here is safe (see above).
 const [done, setDone] = useState(() => {
-  if (typeof window === 'undefined') return true;
   if (window.location.pathname !== '/') return true;
   // A View Transitions navigation sets this; a cold load does not.
   if (sessionStorage.getItem('mr-navigated') === '1') return true;
@@ -77,9 +83,13 @@ The paired CSS is already in `assets/tokens.css`:
 The head script already set `data-theme`. The island reads it rather than assuming a default, or the button label desynchronises from the page on first render.
 
 ```tsx
-const [theme, setTheme] = useState<'dark' | 'light'>(() =>
-  (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') ?? 'dark'
-);
+// Astro server-renders client:load islands before hydrating them, and a
+// useState lazy initializer runs during that SSR pass too — document is
+// undefined there. Guard it, or the page throws on every request.
+const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+  if (typeof document === 'undefined') return 'dark';
+  return (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') ?? 'dark';
+});
 
 function toggle() {
   const next = theme === 'dark' ? 'light' : 'dark';

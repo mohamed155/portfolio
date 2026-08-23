@@ -3,11 +3,13 @@ interface Props {
   variant?: 'solid' | 'outline' | 'ghost' | 'quiet';
   size?: 'sm' | 'md';
   href?: string;
+  target?: string;
+  rel?: string;
   disabled?: boolean;
   class?: string;
 }
 
-const { variant = 'solid', size = 'md', href, disabled = false, class: className } = Astro.props;
+const { variant = 'solid', size = 'md', href, target, rel, disabled = false, class: className } = Astro.props;
 
 const variantClass: Record<string, string> = {
   solid: 'border-transparent bg-ac text-acfg hover:bg-fg hover:text-bg',
@@ -26,6 +28,8 @@ const Tag = href ? 'a' : 'button';
 
 <Tag
   href={href}
+  target={target}
+  rel={rel}
   type={Tag === 'button' ? 'button' : undefined}
   disabled={Tag === 'button' && disabled ? true : undefined}
   aria-disabled={Tag === 'a' && disabled ? 'true' : undefined}

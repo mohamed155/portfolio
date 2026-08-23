@@ -1,0 +1,26 @@
+---
+// No real "also shipped" content exists in the design sources — the ui_kit
+// explicitly omits this section. Unlike ExperienceList/SelectedWork (which
+// own real copy), this stays prop-driven so the page must supply real
+// projects rather than this component inventing placeholder ones.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+import ScreenshotFrame from '../../molecules/ScreenshotFrame/ScreenshotFrame.astro';
+
+interface Item {
+  path: string;
+  caption: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<section id="also-shipped" class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="05" title="also shipped" class="mb-10" />
+  <div class="grid grid-cols-3 gap-6 to-md:grid-cols-2 to-xs:grid-cols-1">
+    {items.map((item) => <ScreenshotFrame path={item.path} caption={item.caption} ratio="16/9" />)}
+  </div>
+</section>
