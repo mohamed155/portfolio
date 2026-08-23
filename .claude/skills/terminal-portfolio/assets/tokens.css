@@ -1,0 +1,95 @@
+/* Terminal Portfolio — design tokens.
+   Copy to src/styles/tokens.css and import once in BaseLayout.
+   Both themes are defined here; nothing else should declare a colour. */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #08090a;
+  --panel: #0d0f0f;
+  --panel2: #101312;
+  --fg: #e9ebe8;
+  --fg2: #9ba09a;
+  --fg3: #63685f;
+  --bd: rgba(255, 255, 255, .14);
+  --bd2: rgba(255, 255, 255, .3);
+  --stripe: rgba(255, 255, 255, .05);
+
+  /* Swap --acUser to re-accent the whole site. Presets:
+     signal #00e5a0 · flare #ff5c1a · ice #7dd3fc · bone #e8e2d4 */
+  --acUser: #00e5a0;
+  --ac: var(--acUser);
+  --acFg: #06120d;
+  --acDim: color-mix(in srgb, var(--ac) 13%, transparent);
+
+  --font-display: "Space Mono", ui-monospace, monospace;
+  --font-body: "IBM Plex Mono", ui-monospace, monospace;
+
+  --hatch: repeating-linear-gradient(45deg, var(--stripe) 0 1px, transparent 1px 9px);
+
+  --container-max: 1360px;
+  --header-height: 58px;
+  --statusbar-height: 28px;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f1e9;
+  --panel: #efebe1;
+  --panel2: #e9e4d8;
+  --fg: #14150f;
+  --fg2: #4a4c42;
+  --fg3: #83857a;
+  --bd: rgba(20, 21, 15, .22);
+  --bd2: rgba(20, 21, 15, .55);
+  --stripe: rgba(20, 21, 15, .06);
+  --ac: color-mix(in oklab, var(--acUser) 52%, #0b0d08);
+  --acFg: #f4f1e9;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+  overflow-x: hidden;
+}
+
+a { color: var(--ac); text-decoration: none; }
+a:hover { color: var(--fg); }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+::selection { background: var(--ac); color: var(--acFg); }
+
+/* Part of the aesthetic — keep them. */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bd); }
+::-webkit-scrollbar-thumb:hover { background: var(--ac); }
+
+@keyframes print { from { opacity: 0; clip-path: inset(0 100% 0 0) } to { opacity: 1; clip-path: inset(0 0 0 0) } }
+@keyframes rise  { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes fadein { from { opacity: 0 } to { opacity: 1 } }
+@keyframes blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+@keyframes flow  { 0% { opacity: 0; transform: translateY(-2px) } 35% { opacity: 1 } 100% { opacity: 0; transform: translateY(26px) } }
+
+/* Scroll-reveal pair for src/lib/reveal.ts */
+[data-reveal] { opacity: 0 }
+[data-reveal].is-in { opacity: 1; animation: print .5s steps(22, end) both }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

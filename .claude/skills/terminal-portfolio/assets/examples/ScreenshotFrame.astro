@@ -1,0 +1,50 @@
+---
+// molecules/ScreenshotFrame/ScreenshotFrame.astro
+// Optional image, hatch fallback. The title bar renders in both states.
+//
+// Vendored from the design project's astro/examples/. Verified against
+// assets/theme.css — every utility here compiles as written.
+import { Image } from 'astro:assets';
+
+interface Props {
+  path: string;              // fake path in the title bar
+  caption: string;           // what the shot shows
+  ratio?: string;            // '4/3' project · '16/9' hero · '16/10' secondary
+  src?: ImageMetadata;       // omit → hatch placeholder
+  alt?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { path, caption, ratio = '4/3', src, alt, loading = 'lazy' } = Astro.props;
+---
+
+<figure class="m-0 border border-bd bg-panel">
+  <div
+    class="flex items-center justify-between gap-2.5 border-b border-bd px-[13px] py-2.5 text-label-sm tracking-nav text-fg3"
+  >
+    <span>{path}</span>
+    <span class="flex gap-[5px]" aria-hidden="true">
+      <span class="h-[7px] w-[7px] border border-bd2"></span>
+      <span class="h-[7px] w-[7px] border border-bd2"></span>
+      <span class="h-[7px] w-[7px] bg-ac"></span>
+    </span>
+  </div>
+
+  <div class="relative" style={`aspect-ratio:${ratio}`}>
+    {src ? (
+      <Image
+        src={src}
+        alt={alt ?? caption}
+        loading={loading}
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+    ) : (
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-hatch">
+        <span class="text-label-sm uppercase tracking-caps-widest text-fg3">screenshot</span>
+        <figcaption
+          class="border border-bd bg-bg px-3 py-1.5 text-ui-sm text-fg2"
+        >{caption}</figcaption>
+      </div>
+    )}
+  </div>
+</figure>

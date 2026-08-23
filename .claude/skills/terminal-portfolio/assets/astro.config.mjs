@@ -1,7 +1,6 @@
-// @ts-check
 // Terminal Portfolio — Astro 7 config.
 // Differs from the design guide's config, which targeted Astro 5 + Tailwind 3.
-// See .claude/skills/terminal-portfolio/references/astro-7-deltas.md for the full list.
+// See references/astro-7-deltas.md for the full list.
 
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
@@ -11,8 +10,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // Required for sitemap, canonical URLs and OG image absolute paths.
-  // Set to the real domain before shipping — the sitemap and OG URLs are
-  // wrong until then.
+  // The build produces wrong URLs silently if this is left as the placeholder.
   site: 'https://example.com',
 
   integrations: [
@@ -32,5 +30,6 @@ export default defineConfig({
   markdown: { syntaxHighlight: false },
 });
 
-// Static output is the default when no adapter is configured — no `output`
-// key needed. The sharp image service is also the default.
+// Static output is the default when no adapter is configured — no `output` key
+// needed. The sharp image service is also the default; the design guide set it
+// explicitly, which is now redundant.
