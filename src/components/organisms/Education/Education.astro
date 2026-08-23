@@ -1,0 +1,19 @@
+---
+// 06 · education. No top hairline — matches the source, which relies on
+// Also Shipped's own bottom padding as the separator rather than a rule.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+import { EDUCATION } from '../../../lib/roles';
+---
+
+<section id="education" data-section="education" class="pb-[84px]">
+  <SectionHeader index="06" title="education" class="mb-0" />
+  {EDUCATION.map((e) => (
+    <div data-reveal class="grid grid-cols-[200px_1fr] gap-[26px] border-b border-b-bd px-2 py-6 to-sm:grid-cols-1">
+      <span class="text-ui-sm tracking-nav text-fg3">{e.dates}</span>
+      <span>
+        <span class="block font-display text-title font-bold text-fg">{e.school}</span>
+        <span class="mt-2 block text-body-sm leading-[1.7] text-fg2">{e.degree}</span>
+      </span>
+    </div>
+  ))}
+</section>

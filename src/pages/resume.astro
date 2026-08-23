@@ -1,0 +1,119 @@
+---
+// Level 5 page. A real page in the design system — same borders, type and
+// monospace voice as the rest of the site — tuned to print cleanly to PDF
+// via the browser's own Print dialog rather than served as a static file.
+// Deliberately skips PageLayout: no header/footer/status-bar chrome to
+// paginate around, and no `data-reveal` — a resume can't depend on the
+// visitor having scrolled a section into view before they print it.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Chip from '../components/atoms/Chip/Chip.astro';
+import { ROLES, EDUCATION } from '../lib/roles';
+import { CATS } from '../lib/capabilities';
+
+const EMAIL = 'mohamedahmedramadan154@gmail.com';
+const GITHUB = 'https://github.com/mohamed155';
+const LINKEDIN = 'https://linkedin.com/in/mohamedahmed-ramadan';
+---
+
+<BaseLayout title="Résumé — Mohamed Ramadan" description="Senior Frontend Engineer — experience, capabilities and education.">
+  <main class="mx-auto max-w-[860px] px-8 py-16 to-xs:px-5 to-xs:py-10">
+    <div class="no-print mb-10 flex justify-end">
+      <button
+        type="button"
+        onclick="window.print()"
+        class="inline-flex items-center gap-[10px] border border-bd2 px-5 py-[14px] text-ui-sm uppercase tracking-caps text-fg transition-colors duration-200 hover:bg-fg hover:text-bg"
+      >print / save as pdf</button>
+    </div>
+
+    <header class="flex flex-wrap items-start justify-between gap-6 border-b border-b-bd2 pb-7">
+      <div>
+        <h1 class="m-0 font-display text-[clamp(28px,4.5vw,42px)] font-bold uppercase leading-none tracking-hero text-fg">
+          Mohamed Ramadan
+        </h1>
+        <p class="mt-3 text-body text-ac">Senior Frontend Engineer</p>
+        <p class="mt-1 text-body-sm text-fg3">Alexandria, Egypt · remote-friendly</p>
+      </div>
+      <div class="flex flex-col items-end gap-1.5 text-body-sm text-fg2">
+        <a href={`mailto:${EMAIL}`} class="border-b border-b-bd2">{EMAIL}</a>
+        <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="border-b border-b-bd2">github.com/mohamed155</a>
+        <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" class="border-b border-b-bd2">linkedin.com/in/mohamedahmed-ramadan</a>
+      </div>
+    </header>
+
+    <p class="mt-7 max-w-[68ch] text-body leading-[1.85] text-fg2">
+      Senior frontend engineer specializing in Angular application architecture — typed, reactive component
+      systems, tenant- and feature-scoped state, and design systems that hold up at scale. Builds down the stack
+      into Rust and Node services when the frontend's data shape demands it.
+    </p>
+
+    <section class="mt-10 break-inside-avoid">
+      <h2 class="border-b border-b-bd pb-[10px] text-[11px] uppercase tracking-caps-wide text-ac">Experience</h2>
+      <ol class="m-0 list-none p-0">
+        {ROLES.map((r) => (
+          <li class="break-inside-avoid border-b border-b-bd py-5">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <span class="font-display text-title font-bold text-fg">{r.title} <span class="font-normal text-fg3">— {r.company}</span></span>
+              <span class="text-label-sm tracking-nav text-fg3">{r.dates}</span>
+            </div>
+            <div class="mt-1 text-label-sm text-fg3">{r.place}</div>
+            <p class="mt-2 max-w-[68ch] text-body-sm leading-[1.75] text-fg2">{r.summary}</p>
+            <div class="mt-2.5 flex flex-wrap gap-1.5">
+              {r.tech.map((t) => <Chip size="sm">{t}</Chip>)}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="mt-10 break-inside-avoid">
+      <h2 class="border-b border-b-bd pb-[10px] text-[11px] uppercase tracking-caps-wide text-ac">Capabilities</h2>
+      <div class="grid grid-cols-2 gap-x-8 gap-y-4 to-xs:grid-cols-1">
+        {CATS.map((c) => (
+          <div class="break-inside-avoid py-2">
+            <div class="flex items-baseline gap-2">
+              <span class="font-display text-body-xs font-bold text-fg">{c.name}</span>
+              <span class="text-label-sm text-fg3">{c.level}</span>
+            </div>
+            <p class="mt-1.5 text-body-sm leading-[1.6] text-fg2">{c.skills.join(' · ')}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-10 break-inside-avoid pb-16">
+      <h2 class="border-b border-b-bd pb-[10px] text-[11px] uppercase tracking-caps-wide text-ac">Education</h2>
+      {EDUCATION.map((e) => (
+        <div class="break-inside-avoid grid grid-cols-[200px_1fr] gap-[26px] border-b border-b-bd py-5 to-xs:grid-cols-1">
+          <span class="text-ui-sm tracking-nav text-fg3">{e.dates}</span>
+          <span>
+            <span class="block font-display text-title font-bold text-fg">{e.school}</span>
+            <span class="mt-1 block text-body-sm leading-[1.6] text-fg2">{e.degree}</span>
+          </span>
+        </div>
+      ))}
+    </section>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  @media print {
+    .no-print { display: none !important; }
+
+    @page { margin: 14mm; }
+
+    :root {
+      --bg: #ffffff;
+      --panel: #ffffff;
+      --panel2: #ffffff;
+      --fg: #101110;
+      --fg2: #333530;
+      --fg3: #5c5f57;
+      --bd: #ccc;
+      --bd2: #999;
+      --ac: #0a7a54;
+      --acFg: #ffffff;
+    }
+
+    a { text-decoration: underline; }
+  }
+</style>

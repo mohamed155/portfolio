@@ -39,6 +39,13 @@ export default function BootSequenceIsland() {
     return () => { document.body.style.overflow = ''; };
   }, [done]);
 
+  // Hero's typing intro waits for this before it starts — otherwise it would
+  // play out behind this overlay and the user would only ever see the
+  // finished text.
+  useEffect(() => {
+    if (done) document.dispatchEvent(new CustomEvent('mr:boot-done'));
+  }, [done]);
+
   if (done) return null;
 
   return (

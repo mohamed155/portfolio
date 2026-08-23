@@ -17,7 +17,7 @@ const meta = `${String(challenges.length).padStart(2, '0')} constraints`;
   <SectionHeader index="02" title="The Challenge" meta={meta} class="mb-11" />
   <ol class="m-0 list-none p-0">
     {challenges.map((c) => (
-      <li class="group border-b border-b-bd transition-colors duration-200 hover:bg-panel">
+      <li data-reveal class="group border-b border-b-bd transition-colors duration-200 hover:bg-panel">
         <div class="grid grid-cols-[40px_1fr] gap-5 px-2 py-[22px]">
           <span class="pt-[3px] text-[11px] tracking-[.08em] text-fg3 transition-colors duration-200 group-hover:text-ac">{c.n}</span>
           <span>

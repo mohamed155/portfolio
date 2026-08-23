@@ -17,10 +17,10 @@ const meta = `${String(decisions.length).padStart(2, '0')} records`;
 
 <section class="border-t border-t-bd2 py-[84px]">
   <SectionHeader index="05" title="Technical Decisions" meta={meta} class="mb-5" />
-  <p class="mb-9 max-w-[56ch] text-body leading-[1.8] text-fg2">Each decision below records what it cost as well as what it bought.</p>
+  <p data-reveal class="mb-9 max-w-[56ch] text-body leading-[1.8] text-fg2">Each decision below records what it cost as well as what it bought.</p>
   <div class="grid grid-cols-2 gap-4 to-xl:grid-cols-1">
     {decisions.map((d) => (
-      <div class="border border-bd border-l-[3px] border-l-ac bg-panel p-[26px]">
+      <div data-reveal class="border border-bd border-l-[3px] border-l-ac bg-panel p-[26px]">
         <div class="text-[10px] uppercase tracking-caps-wide text-ac">{d.n}</div>
         <div class="mt-[18px] flex flex-col gap-[18px]">
           <div>

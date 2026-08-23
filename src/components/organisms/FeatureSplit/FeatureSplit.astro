@@ -32,14 +32,14 @@ const { index, section, heading, body, flip = false, shot } = Astro.props;
     {flip ? (
       <>
         <ScreenshotFrame path={shot.path} caption={shot.caption} ratio={shot.ratio ?? '16/10'} src={shot.src} />
-        <div>
+        <div data-reveal>
           <h3 class="font-display text-h3 font-bold leading-[1.15] tracking-heading text-fg">{heading}</h3>
           <p class="mt-4 max-w-[48ch] text-body leading-[1.85] text-fg2">{body}</p>
         </div>
       </>
     ) : (
       <>
-        <div>
+        <div data-reveal>
           <h3 class="font-display text-h3 font-bold leading-[1.15] tracking-heading text-fg">{heading}</h3>
           <p class="mt-4 max-w-[48ch] text-body leading-[1.85] text-fg2">{body}</p>
         </div>

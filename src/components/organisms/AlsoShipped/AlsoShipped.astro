@@ -1,26 +1,53 @@
 ---
-// No real "also shipped" content exists in the design sources — the ui_kit
-// explicitly omits this section. Unlike ExperienceList/SelectedWork (which
-// own real copy), this stays prop-driven so the page must supply real
-// projects rather than this component inventing placeholder ones.
+// 05 · also shipped. Real content, ported verbatim from Portfolio v2.dc.html
+// (its `others` array) — earlier passes missed this because the fetch of
+// that source file was read only partway through.
 import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
-import ScreenshotFrame from '../../molecules/ScreenshotFrame/ScreenshotFrame.astro';
+import Chip from '../../atoms/Chip/Chip.astro';
 
 interface Item {
-  path: string;
-  caption: string;
+  title: string;
+  meta: string;
+  desc: string;
+  tech: string[];
+  shot: string;
+  href: string;
 }
 
-interface Props {
-  items: Item[];
-}
-
-const { items } = Astro.props;
+const ITEMS: Item[] = [
+  { title: 'SNB Retailer App', meta: 'crealogix · dec 2025 — jul 2026', desc: 'Desktop and mobile e-banking web applications for Saudi National Bank clients.', tech: ['Angular'], shot: 'e-banking dashboard', href: 'https://github.com/mohamed155' },
+  { title: 'Media Player', meta: 'intouch.com · mar 2024 — sep 2025', desc: 'Ad-playing media player pulling ads from backend services, with camera integration and a local TensorFlow model for demographic data and ad-view counting.', tech: ['Angular', 'TensorFlow'], shot: 'player + analytics', href: 'https://github.com/mohamed155' },
+  { title: 'Retailer / Ads Portal', meta: 'intouch.com · mar 2024 — sep 2025', desc: 'Monitoring and management portal for retailers and advertising campaigns.', tech: ['Angular'], shot: 'campaign monitoring', href: 'https://github.com/mohamed155' },
+];
 ---
 
-<section id="also-shipped" class="border-t border-t-bd2 py-[84px]">
-  <SectionHeader index="05" title="also shipped" class="mb-10" />
-  <div class="grid grid-cols-3 gap-6 to-md:grid-cols-2 to-xs:grid-cols-1">
-    {items.map((item) => <ScreenshotFrame path={item.path} caption={item.caption} ratio="16/9" />)}
+<section id="also-shipped" class="border-t border-t-bd2 pb-[84px] pt-[76px]">
+  <SectionHeader index="05" title="also shipped" meta="client work" class="mb-9" />
+  <div class="grid grid-cols-3 gap-4 to-sm:grid-cols-1">
+    {ITEMS.map((item) => (
+      <a
+        data-reveal
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex flex-col border border-bd text-fg transition-colors duration-200 hover:border-ac hover:bg-panel"
+      >
+        <span class="flex aspect-video flex-col items-center justify-center gap-3 border-b border-b-bd bg-hatch">
+          <span class="text-label-sm uppercase tracking-caps-widest text-fg3">screenshot</span>
+          <span class="text-ui-sm text-fg2">{item.shot}</span>
+        </span>
+        <span class="block p-5">
+          <span class="flex items-baseline justify-between gap-[10px]">
+            <span class="font-display text-body-lg font-bold tracking-title">{item.title}</span>
+            <span class="text-body-sm text-ac">&#8599;</span>
+          </span>
+          <span class="mt-2 block text-label-sm tracking-caps text-fg3">{item.meta}</span>
+          <span class="mt-[13px] block text-body-sm leading-[1.75] text-fg2">{item.desc}</span>
+          <span class="mt-4 flex flex-wrap gap-[6px]">
+            {item.tech.map((t) => <Chip variant="quiet" size="sm">{t}</Chip>)}
+          </span>
+        </span>
+      </a>
+    ))}
   </div>
 </section>

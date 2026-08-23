@@ -1,11 +1,16 @@
 ---
-// Home. The only route that runs the boot sequence.
+// Home. The only route that runs the boot sequence. Section order matches
+// Portfolio v2.dc.html: hero -> about -> capabilities -> experience -> work
+// -> also shipped -> education -> contact.
 import PageLayout from '../layouts/PageLayout.astro';
 import BootSequence from '../components/organisms/BootSequence/BootSequence.astro';
 import Hero from '../components/organisms/Hero/Hero.astro';
+import About from '../components/organisms/About/About.astro';
 import Capabilities from '../components/organisms/Capabilities/Capabilities.astro';
 import ExperienceList from '../components/organisms/ExperienceList/ExperienceList.astro';
 import SelectedWork from '../components/organisms/SelectedWork/SelectedWork.astro';
+import AlsoShipped from '../components/organisms/AlsoShipped/AlsoShipped.astro';
+import Education from '../components/organisms/Education/Education.astro';
 import ContactSection from '../components/organisms/ContactSection/ContactSection.astro';
 ---
 
@@ -16,8 +21,11 @@ import ContactSection from '../components/organisms/ContactSection/ContactSectio
 >
   <BootSequence />
   <Hero />
+  <About />
   <Capabilities />
   <ExperienceList />
   <SelectedWork />
+  <AlsoShipped />
+  <Education />
   <ContactSection />
 </PageLayout>

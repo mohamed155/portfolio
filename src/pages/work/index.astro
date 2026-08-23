@@ -1,0 +1,45 @@
+---
+// Level 5 page. Index of all projects — the two real case studies plus the
+// in-progress project rendered as the dashed, non-linking block from the
+// design (see routes table + content-collections.md: a drafted case study
+// has no route at all, so this page can't link to it).
+import PageLayout from '../../layouts/PageLayout.astro';
+import Caret from '../../components/atoms/Caret/Caret.astro';
+import ProjectArticle from '../../components/organisms/ProjectArticle/ProjectArticle.astro';
+import { PROJECTS, IN_PROGRESS_PROJECT } from '../../lib/projects';
+---
+
+<PageLayout
+  title="Work — Mohamed Ramadan"
+  description="Case studies: an AI customer-service platform and a local-first inventory desktop application."
+  active="work"
+>
+  <section class="pt-[72px] pb-[76px]">
+    <div class="flex items-center gap-2 text-[11.5px] uppercase tracking-caps text-fg3">
+      <span class="text-ac">$</span><span>ls -la /work</span><Caret />
+    </div>
+    <h1 class="mt-[18px] font-display text-[clamp(34px,7vw,72px)] font-bold uppercase leading-[.94] tracking-hero text-fg">
+      All Work
+    </h1>
+    <p class="mt-7 max-w-[62ch] text-[clamp(14px,1.15vw,16px)] leading-[1.85] text-fg2">
+      Case studies from projects I've built or led. Each one covers the architecture, the trade-offs, and what shipped.
+    </p>
+  </section>
+
+  {PROJECTS.map((p) => <ProjectArticle {...p} />)}
+
+  <div
+    data-reveal
+    class="border border-dashed border-bd2 bg-panel p-[clamp(28px,4vw,52px)] mb-[76px]"
+  >
+    <span class="block text-label-sm uppercase tracking-caps-wide text-fg3">
+      project {IN_PROGRESS_PROJECT.index} · {IN_PROGRESS_PROJECT.kind}
+    </span>
+    <span class="mt-4 block font-display text-[clamp(24px,4vw,52px)] font-bold uppercase leading-[1.05] tracking-hero text-fg3">
+      {IN_PROGRESS_PROJECT.title}
+    </span>
+    <span class="mt-5 inline-block border border-dashed border-bd2 px-4 py-[10px] text-label-sm uppercase tracking-caps text-fg3">
+      case study in progress
+    </span>
+  </div>
+</PageLayout>

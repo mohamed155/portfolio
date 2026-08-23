@@ -12,6 +12,7 @@
 //   class=           -> className=       (React island, not an .astro file)
 
 import { useEffect, useRef, useState } from 'react';
+import { useActiveSection } from '../../../lib/useActiveSection';
 
 type Theme = 'dark' | 'light';
 
@@ -21,6 +22,12 @@ const NAV: [string, string][] = [
 ];
 
 export default function HeaderIsland({ active }: { active?: string }) {
+  // On the home page, [data-section] markers exist and this tracks scroll
+  // position live. Everywhere else (case studies, /work, /404, /resume) there
+  // are none, so the hook stays undefined and the page's own static `active`
+  // prop — e.g. CaseStudyLayout always passing "work" — decides the highlight.
+  const scrollActive = useActiveSection();
+  const activeLabel = scrollActive ?? active;
   // Always starts 'dark', matching what client:load's SSR pass renders
   // (document doesn't exist there). Reading the real value in the
   // initializer instead would make the client's first render disagree with
@@ -95,7 +102,7 @@ export default function HeaderIsland({ active }: { active?: string }) {
 
         <nav aria-label="Sections" className="ml-auto flex gap-0.5 to-sm:hidden">
           {NAV.map(([n, label]) => {
-            const on = active === label;
+            const on = activeLabel === label;
             return (
               <a
                 key={n}

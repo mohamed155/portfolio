@@ -1,0 +1,40 @@
+---
+// Level 5 page. One case study per collection entry, rendered through
+// CaseStudyLayout. `hero.src` / `features[].shot.src` are optional strings
+// in the schema — resolved to ImageMetadata here (not in the template, see
+// content-collections.md's Images section) via import.meta.glob over
+// src/assets. No case study sets a src today, so every screenshot renders
+// the hatch placeholder until real images are added.
+import { getCollection, render } from 'astro:content';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{png,jpg,jpeg,webp,avif}');
+
+async function resolve(src?: string): Promise<ImageMetadata | undefined> {
+  if (!src) return undefined;
+  const loader = images[src];
+  if (!loader) return undefined;
+  return (await loader()).default;
+}
+
+export async function getStaticPaths() {
+  const entries = await getCollection('case-studies', ({ data }) => !data.draft);
+  return entries
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const heroSrc = await resolve(entry.data.hero.src);
+const features = await Promise.all(
+  entry.data.features.map(async (f) => ({ ...f, shot: { ...f.shot, src: await resolve(f.shot.src) } }))
+);
+
+const data = { ...entry.data, hero: { ...entry.data.hero, src: heroSrc }, features };
+---
+
+<CaseStudyLayout data={data}>
+  <Content />
+</CaseStudyLayout>

@@ -13,6 +13,8 @@ const HIGHLIGHTS = [
 
 <div class="grid grid-cols-4 border-t border-t-bd2 border-b border-b-bd2 to-lg:grid-cols-2 to-xs:grid-cols-1">
   {HIGHLIGHTS.map((h) => (
-    <StatTile index={h.index} value={h.value} label={h.label}>{h.description}</StatTile>
+    <div data-reveal>
+      <StatTile index={h.index} value={h.value} label={h.label}>{h.description}</StatTile>
+    </div>
   ))}
 </div>

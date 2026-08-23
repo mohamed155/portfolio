@@ -1,26 +1,10 @@
 ---
 import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
 import ProjectArticle from '../ProjectArticle/ProjectArticle.astro';
-
-const PROJECTS = [
-  {
-    index: '01', kind: 'AI · multi-tenant saas', title: 'AI Customer Service Platform',
-    slug: 'ai-customer-service-platform', path: 'app.support / inbox', shot: 'conversation inbox + AI assistant',
-    description: 'A multi-tenant AI-powered customer-service platform: shared conversation inbox, knowledge base, tenant switching, customer profiles and an admin dashboard, with WhatsApp and Telegram as message channels.',
-    contribution: 'Frontend architecture for tenant-scoped state, plus the retrieval-backed assistant surface built on a Rust API with pgvector.',
-    tech: ['Angular', 'NgRx', 'Rust', 'Axum', 'PostgreSQL', 'pgvector'],
-  },
-  {
-    index: '02', kind: 'desktop · local-first', title: 'Inventory Desktop Application',
-    slug: 'inventory-desktop-application', path: 'Inventory.app — stock', shot: 'stock table + item form', flip: true,
-    description: 'Desktop inventory management software built for offline use: local-first storage, dense data entry, validated forms and packaged distribution for real workstation workflows.',
-    contribution: 'A typed data layer from SQLite through Prisma into the renderer, and a form system that keeps validation rules in one place.',
-    tech: ['Electron', 'React', 'TypeScript', 'Prisma', 'SQLite'],
-  },
-];
+import { PROJECTS } from '../../../lib/projects';
 ---
 
-<section id="work" data-section="04 selected work" class="border-t border-t-bd2 pt-[84px]">
+<section id="work" data-section="work" class="border-t border-t-bd2 pt-[84px]">
   <SectionHeader index="04" title="selected work" meta="architecture · engineering · ux" class="mb-14" />
   {PROJECTS.map((p) => <ProjectArticle {...p} />)}
 </section>
