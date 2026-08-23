@@ -1,0 +1,23 @@
+---
+// Decorative block caret. `slow` runs the 1.4s status-bar blink instead of
+// the default 1s — the rest of the system always uses the default.
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'inline';
+  slow?: boolean;
+  class?: string;
+}
+
+const { size = 'md', slow = false, class: className } = Astro.props;
+
+const dims: Record<string, string> = {
+  sm: 'h-[11px] w-[6px]',
+  md: 'h-[13px] w-[7px]',
+  lg: 'h-[16px] w-[9px]',
+  inline: 'h-[.72em] w-[.46em] align-[-.02em]',
+};
+---
+
+<span
+  aria-hidden="true"
+  class:list={['inline-block flex-none bg-ac', dims[size], slow ? 'animate-blink-slow' : 'animate-blink', className]}
+></span>

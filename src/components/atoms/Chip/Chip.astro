@@ -1,0 +1,23 @@
+---
+interface Props {
+  variant?: 'default' | 'quiet' | 'lead';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { variant = 'default', size = 'md', class: className } = Astro.props;
+
+// Quiet only ever renders sm; lead ignores size entirely.
+const key = variant === 'lead' ? 'lead' : variant === 'quiet' ? 'quiet-sm' : `default-${size}`;
+
+const styles: Record<string, string> = {
+  'default-md': 'gap-2 border-bd bg-transparent px-[11px] py-2 text-label text-fg2',
+  'default-sm': 'gap-1.5 border-bd bg-transparent px-2 py-1 text-label-sm text-fg2',
+  'quiet-sm': 'gap-1.5 border-bd bg-transparent px-2 py-1 text-label-sm text-fg3',
+  lead: 'gap-2 border-ac bg-acdim px-[13px] py-[9px] text-body-xs font-medium text-fg',
+};
+---
+
+<span class:list={['inline-flex items-center border tracking-[.04em]', styles[key], className]}>
+  <slot />
+</span>

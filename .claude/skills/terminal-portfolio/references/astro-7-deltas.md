@@ -53,6 +53,10 @@ If Preflight ever does fight a token rule, opt out of that one layer rather than
 /* preflight.css deliberately omitted */
 ```
 
+## Unlayered CSS beats layered CSS at any specificity
+
+`tokens.css`'s `a`, `a:hover` and `button` rules must live in `@layer base`. Discovered building Level 1: with those rules unlayered, `a { color: var(--ac) }` silently overrode every `text-acfg`/`hover:text-bg` utility on an `<a>`-rendered `Button` or `NavLink` — text became invisible (accent-on-accent) — even though the utility class had higher specificity. Per the CSS cascade, an unlayered rule always wins over anything inside `@layer`, specificity doesn't matter. Tailwind's own utilities live in `@layer utilities`, so any un-layered override in `tokens.css` silently wins forever. Keep new global element rules inside `@layer base` for the same reason; `:focus-visible`, `::selection` and the scrollbar rules stay unlayered on purpose — nothing is meant to override them.
+
 ## Default border colour changed
 
 Tailwind 3 defaulted `border` to `gray-200`; the design's config overrode it to `var(--bd)`. **Tailwind 4 defaults to `currentColor`**, and `@theme` has no `--default-border-color` equivalent to that old `borderColor.DEFAULT` override.
