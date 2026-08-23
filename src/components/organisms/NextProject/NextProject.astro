@@ -1,0 +1,23 @@
+---
+// Closing block. content.config.ts: next is nullable — CaseStudyLayout skips
+// rendering this organism entirely when a case study has no next one.
+interface Props {
+  slug: string;
+  title: string;
+}
+
+const { slug, title } = Astro.props;
+---
+
+<section class="border-t border-t-bd2 pt-[84px] pb-24">
+  <a
+    href={`/work/${slug}`}
+    class="group block border border-bd bg-panel p-[clamp(28px,4vw,52px)] text-fg transition-colors duration-200 hover:border-ac hover:bg-panel2"
+  >
+    <span class="block text-label-sm uppercase tracking-caps-wide text-ac">next project</span>
+    <span class="mt-4 flex flex-wrap items-center gap-[18px] font-display text-[clamp(24px,4vw,52px)] font-bold uppercase leading-[1.05] tracking-hero">
+      {title}
+      <span class="text-[.5em] text-ac">&rarr;</span>
+    </span>
+  </a>
+</section>

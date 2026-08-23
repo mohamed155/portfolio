@@ -1,0 +1,31 @@
+---
+// 02 · the challenge — a hover-row list, ExperienceRow-style. The source's
+// two-column layout pairs the list with a decorative headline that has no
+// field in content.config.ts's `challenges` schema, so it's dropped rather
+// than invented.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  challenges: { n: string; t: string; d: string }[];
+}
+
+const { challenges } = Astro.props;
+const meta = `${String(challenges.length).padStart(2, '0')} constraints`;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="02" title="The Challenge" meta={meta} class="mb-11" />
+  <ol class="m-0 list-none p-0">
+    {challenges.map((c) => (
+      <li class="group border-b border-b-bd transition-colors duration-200 hover:bg-panel">
+        <div class="grid grid-cols-[40px_1fr] gap-5 px-2 py-[22px]">
+          <span class="pt-[3px] text-[11px] tracking-[.08em] text-fg3 transition-colors duration-200 group-hover:text-ac">{c.n}</span>
+          <span>
+            <span class="block font-display text-[15.5px] font-bold tracking-title text-fg">{c.t}</span>
+            <span class="mt-[9px] block max-w-[60ch] text-body-sm leading-[1.8] text-fg2">{c.d}</span>
+          </span>
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>

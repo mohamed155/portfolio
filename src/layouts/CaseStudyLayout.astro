@@ -1,0 +1,81 @@
+---
+// Level 4 template. PageLayout + the numbered-section rhythm every case
+// study shares (references/content-collections.md). All nine numbered
+// sections are driven entirely by `data` — the MDX body (the `<slot />`)
+// has nothing structural to add; it exists only so a case study can carry
+// incidental prose if a future one needs it.
+//
+// `data`'s image fields (hero.src, features[].shot.src) are typed as
+// resolved ImageMetadata, not the raw content-collection strings — resolving
+// those strings via import.meta.glob is the page's job, not the template's
+// (see references/content-collections.md's Images section). `work/[...slug].astro`
+// (Level 5) is the caller that does that resolution.
+//
+// BaseLayout already binds the scroll-reveal observer globally on
+// astro:page-load — nothing extra to wire up here.
+import type { CollectionEntry } from 'astro:content';
+import PageLayout from './PageLayout.astro';
+import CaseStudyHero from '../components/organisms/CaseStudyHero/CaseStudyHero.astro';
+import ContextGrid from '../components/organisms/ContextGrid/ContextGrid.astro';
+import ChallengeList from '../components/organisms/ChallengeList/ChallengeList.astro';
+import RoleGrid from '../components/organisms/RoleGrid/RoleGrid.astro';
+import ArchitectureDiagram from '../components/organisms/ArchitectureDiagram/ArchitectureDiagram.astro';
+import DecisionGrid from '../components/organisms/DecisionGrid/DecisionGrid.astro';
+import FeatureSplit from '../components/organisms/FeatureSplit/FeatureSplit.astro';
+import QualityGrid from '../components/organisms/QualityGrid/QualityGrid.astro';
+import OutcomeList from '../components/organisms/OutcomeList/OutcomeList.astro';
+import NextProject from '../components/organisms/NextProject/NextProject.astro';
+
+type CaseStudyData = CollectionEntry<'case-studies'>['data'];
+
+interface Props {
+  data: Omit<CaseStudyData, 'hero' | 'features'> & {
+    hero: Omit<CaseStudyData['hero'], 'src'> & { src?: ImageMetadata };
+    features: (Omit<CaseStudyData['features'][number], 'shot'> & {
+      shot: Omit<CaseStudyData['features'][number]['shot'], 'src'> & { src?: ImageMetadata };
+    })[];
+  };
+}
+
+const { data } = Astro.props;
+const [feature1, feature2] = data.features;
+---
+
+<PageLayout title={`${data.title} — Case Study — Mohamed Ramadan`} description={data.lead} active="work">
+  <CaseStudyHero
+    index={data.index}
+    kind={data.kind}
+    title={data.title}
+    lead={data.lead}
+    meta={data.meta}
+    links={data.links}
+    hero={data.hero}
+  />
+
+  <slot />
+
+  <ContextGrid context={data.context} />
+  <ChallengeList challenges={data.challenges} />
+  <RoleGrid role={data.role} />
+  <ArchitectureDiagram architecture={data.architecture} />
+  <DecisionGrid decisions={data.decisions} />
+  <FeatureSplit
+    index={feature1.n}
+    section={feature1.section}
+    heading={feature1.heading}
+    body={feature1.body}
+    flip={feature1.flip}
+    shot={feature1.shot}
+  />
+  <FeatureSplit
+    index={feature2.n}
+    section={feature2.section}
+    heading={feature2.heading}
+    body={feature2.body}
+    flip={feature2.flip}
+    shot={feature2.shot}
+  />
+  <QualityGrid quality={data.quality} />
+  <OutcomeList outcome={data.outcome} status={data.status} />
+  {data.next && <NextProject slug={data.next.slug} title={data.next.title} />}
+</PageLayout>

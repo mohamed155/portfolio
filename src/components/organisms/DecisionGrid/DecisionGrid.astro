@@ -1,0 +1,46 @@
+---
+// 05 · technical decisions — accent-ruled panels: problem / decision / reason
+// / trade-off. content.config.ts: decisions.length(4).
+//
+// The intro line is fixed chrome (verbatim from the design source, appears
+// identically on every case study) rather than typed content — matches the
+// precedent of Capabilities' hardcoded intro / ExperienceList's hardcoded meta.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  decisions: { n: string; problem: string; decision: string; reason: string; tradeoff: string }[];
+}
+
+const { decisions } = Astro.props;
+const meta = `${String(decisions.length).padStart(2, '0')} records`;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="05" title="Technical Decisions" meta={meta} class="mb-5" />
+  <p class="mb-9 max-w-[56ch] text-body leading-[1.8] text-fg2">Each decision below records what it cost as well as what it bought.</p>
+  <div class="grid grid-cols-2 gap-4 to-xl:grid-cols-1">
+    {decisions.map((d) => (
+      <div class="border border-bd border-l-[3px] border-l-ac bg-panel p-[26px]">
+        <div class="text-[10px] uppercase tracking-caps-wide text-ac">{d.n}</div>
+        <div class="mt-[18px] flex flex-col gap-[18px]">
+          <div>
+            <div class="text-[10px] uppercase tracking-caps-wide text-fg3">problem</div>
+            <div class="mt-2 font-display text-[15px] font-bold leading-[1.45] tracking-title text-fg">{d.problem}</div>
+          </div>
+          <div class="border-t border-t-bd pt-4">
+            <div class="text-[10px] uppercase tracking-caps-wide text-fg3">decision</div>
+            <div class="mt-2 text-body-sm leading-[1.8] text-fg2">{d.decision}</div>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-caps-wide text-fg3">reason</div>
+            <div class="mt-2 text-body-sm leading-[1.8] text-fg2">{d.reason}</div>
+          </div>
+          <div class="border border-bd bg-bg p-4">
+            <div class="text-[10px] uppercase tracking-caps-wide text-ac">trade-off</div>
+            <div class="mt-2 text-body-xs leading-[1.75] text-fg2">{d.tradeoff}</div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

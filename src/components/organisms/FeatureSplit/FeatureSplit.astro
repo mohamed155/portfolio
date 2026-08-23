@@ -1,0 +1,50 @@
+---
+// 06 / 07 · narrative + screenshot, alternating pair. content.config.ts:
+// features.length(2), each with its own `flip`.
+//
+// The image column is always the wider one (1.15fr) in the source, on either
+// side — so flip swaps which literal child renders first and which grid
+// template is used, rather than reordering via CSS `order` (order would move
+// a child into the other track and resize it, since the columns aren't equal).
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+import ScreenshotFrame from '../../molecules/ScreenshotFrame/ScreenshotFrame.astro';
+
+interface Props {
+  index: string;
+  section: string;
+  heading: string;
+  body: string;
+  flip?: boolean;
+  shot: { path: string; caption: string; ratio?: string; src?: ImageMetadata };
+}
+
+const { index, section, heading, body, flip = false, shot } = Astro.props;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index={index} title={section} class="mb-11" />
+  <div
+    class:list={[
+      'grid items-center gap-[52px] to-xl:grid-cols-1 to-xl:gap-10',
+      flip ? 'grid-cols-[1.15fr_1fr]' : 'grid-cols-[1fr_1.15fr]',
+    ]}
+  >
+    {flip ? (
+      <>
+        <ScreenshotFrame path={shot.path} caption={shot.caption} ratio={shot.ratio ?? '16/10'} src={shot.src} />
+        <div>
+          <h3 class="font-display text-h3 font-bold leading-[1.15] tracking-heading text-fg">{heading}</h3>
+          <p class="mt-4 max-w-[48ch] text-body leading-[1.85] text-fg2">{body}</p>
+        </div>
+      </>
+    ) : (
+      <>
+        <div>
+          <h3 class="font-display text-h3 font-bold leading-[1.15] tracking-heading text-fg">{heading}</h3>
+          <p class="mt-4 max-w-[48ch] text-body leading-[1.85] text-fg2">{body}</p>
+        </div>
+        <ScreenshotFrame path={shot.path} caption={shot.caption} ratio={shot.ratio ?? '16/10'} src={shot.src} />
+      </>
+    )}
+  </div>
+</section>

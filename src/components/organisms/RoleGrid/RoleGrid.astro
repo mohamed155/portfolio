@@ -1,0 +1,32 @@
+---
+// 03 · my role — heading + blurb + 4-item grid (content.config.ts: role.items.length(4)).
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  role: {
+    heading: string;
+    blurb: string;
+    items: { t: string; d: string }[];
+  };
+}
+
+const { role } = Astro.props;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="03" title="My Role" class="mb-11" />
+  <div class="grid grid-cols-[.8fr_1.2fr] items-start gap-14 to-xl:grid-cols-1 to-xl:gap-10">
+    <div>
+      <h2 class="font-display text-h3 font-bold leading-[1.14] tracking-tight2 text-fg">{role.heading}</h2>
+      <p class="mt-4 max-w-[44ch] text-body leading-[1.8] text-fg2">{role.blurb}</p>
+    </div>
+    <div class="grid grid-cols-2 gap-4 to-sm:grid-cols-1">
+      {role.items.map((item) => (
+        <div class="border border-bd bg-panel p-[22px]">
+          <div class="font-display text-[14.5px] font-bold tracking-title text-fg">{item.t}</div>
+          <p class="mt-[10px] text-body-xs leading-[1.75] text-fg2">{item.d}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

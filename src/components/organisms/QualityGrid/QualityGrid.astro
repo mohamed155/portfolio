@@ -1,0 +1,24 @@
+---
+// 08 · engineering quality — 4-up hairline grid, always eight items
+// (content.config.ts: quality.length(8)).
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  quality: { t: string; d: string }[];
+}
+
+const { quality } = Astro.props;
+const meta = `${String(quality.length).padStart(2, '0')} dimensions`;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="08" title="Engineering Quality" meta={meta} />
+  <div class="grid grid-cols-4 to-md:grid-cols-2 to-xs:grid-cols-1">
+    {quality.map((q) => (
+      <div class="border-l border-l-bd border-b border-b-bd px-[22px] py-[26px]">
+        <div class="font-display text-body font-bold leading-none tracking-title text-fg">{q.t}</div>
+        <p class="mt-[10px] text-body-sm leading-[1.75] text-fg2">{q.d}</p>
+      </div>
+    ))}
+  </div>
+</section>

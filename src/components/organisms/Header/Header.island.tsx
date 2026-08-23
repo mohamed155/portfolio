@@ -1,6 +1,7 @@
 // organisms/Header/Header.island.tsx — client:load
 // Owns theme state and the mobile menu. The pre-paint script in <head> has
-// already set data-theme; this reads it rather than assuming a default.
+// already set data-theme on <html>, so colours are correct from first paint
+// regardless of what this component's own state starts as.
 //
 // Vendored from the design project's astro/examples/ and CORRECTED. The
 // original used four things that do not compile against assets/theme.css —
@@ -20,10 +21,19 @@ const NAV: [string, string][] = [
 ];
 
 export default function HeaderIsland({ active }: { active?: string }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document === 'undefined') return 'dark';
-    return (document.documentElement.getAttribute('data-theme') as Theme) ?? 'dark';
-  });
+  // Always starts 'dark', matching what client:load's SSR pass renders
+  // (document doesn't exist there). Reading the real value in the
+  // initializer instead would make the client's first render disagree with
+  // the server's whenever the visitor's saved theme is 'light' — a React
+  // hydration mismatch on every such page load. Sync to the true value
+  // after mount instead; the toggle button's label may correct itself one
+  // frame after paint, but the colours (driven by the head script) never do.
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  useEffect(() => {
+    const current = document.documentElement.getAttribute('data-theme') as Theme | null;
+    if (current && current !== 'dark') setTheme(current);
+  }, []);
   const [menu, setMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);

@@ -80,16 +80,25 @@ The paired CSS is already in `assets/tokens.css`:
 
 ## Theme toggle
 
-The head script already set `data-theme`. The island reads it rather than assuming a default, or the button label desynchronises from the page on first render.
+The head script already set `data-theme` on `<html>` before first paint, so colours are always correct immediately — this island's own state is only for the toggle button's label, and getting its initializer wrong causes two different bugs.
+
+**Don't crash SSR.** `client:load` still server-renders the component once before hydrating it, and a `useState` lazy initializer runs during that SSR pass too — `document` is undefined there. A bare `document.documentElement...` read throws on every request.
+
+**Don't read the real value in the initializer either — even guarded.** The obvious fix (`typeof document === 'undefined' ? 'dark' : <real value>`) stops the crash but creates a *hydration mismatch* instead: the server always falls back to `'dark'` (no `document`), while the client's first render reads the visitor's actual saved theme. Whenever that's `'light'`, the server and client disagree and React throws — on every full page load for every paper-theme visitor, not just once. This is the same class of bug as the boot sequence's (see above): a browser-only value read inside a lazy initializer that a `client:load` component also has to SSR.
+
+The fix is the same shape too: start from a fixed value that matches what SSR renders, then sync to the truth in an effect **after** mount, not during render.
 
 ```tsx
-// Astro server-renders client:load islands before hydrating them, and a
-// useState lazy initializer runs during that SSR pass too — document is
-// undefined there. Guard it, or the page throws on every request.
-const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-  if (typeof document === 'undefined') return 'dark';
-  return (document.documentElement.getAttribute('data-theme') as 'dark' | 'light') ?? 'dark';
-});
+// Always starts 'dark' — matching client:load's SSR pass, where document
+// doesn't exist. Reading the real theme in the initializer instead would
+// make the client's first render disagree with the server's whenever the
+// visitor's saved theme is 'light': a hydration mismatch on every such load.
+const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+useEffect(() => {
+  const current = document.documentElement.getAttribute('data-theme') as 'dark' | 'light' | null;
+  if (current && current !== 'dark') setTheme(current);
+}, []);
 
 function toggle() {
   const next = theme === 'dark' ? 'light' : 'dark';
@@ -98,6 +107,8 @@ function toggle() {
   setTheme(next);
 }
 ```
+
+The label may show `dark` for one frame before correcting itself on a paper-theme visitor's first load — acceptable, since it's only the button text; the page's actual colours never flash, because those come from the head script on `<html>`, not from this component's state.
 
 The label names the theme you are **in** (`dark` / `paper`), not the one you would switch to. Persist under `mr-theme` — the same key the head script reads. Theme must survive View Transitions: since it lives on `<html>` and Astro preserves that element, it does, but **do not move it to `<body>`**.
 

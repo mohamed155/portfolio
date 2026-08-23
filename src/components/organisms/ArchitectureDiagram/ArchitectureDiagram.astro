@@ -1,0 +1,43 @@
+---
+// 04 · architecture — stacked layer rows joined by an accent flow dot.
+// content.config.ts: architecture.min(3).max(8).
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  architecture: { layer: string; title: string; desc: string; tags: string[] }[];
+}
+
+const { architecture } = Astro.props;
+const meta = `${String(architecture.length).padStart(2, '0')} layers`;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="04" title="Architecture" meta={meta} class="mb-9" />
+  <div class="border border-bd bg-panel p-[clamp(20px,3vw,40px)]">
+    <div class="mx-auto flex max-w-[820px] flex-col">
+      {architecture.map((node, i) => (
+        <>
+          <div class="grid grid-cols-[1fr_auto] items-center gap-[18px] border border-bd bg-bg px-5 py-[18px] to-xs:grid-cols-1 to-xs:justify-items-start to-xs:gap-3">
+            <div>
+              <div class="text-[10px] uppercase tracking-caps-wide text-ac">{node.layer}</div>
+              <div class="mt-[9px] font-display text-[15.5px] font-bold tracking-title text-fg">{node.title}</div>
+              <div class="mt-[7px] text-body-xs leading-[1.75] text-fg2">{node.desc}</div>
+            </div>
+            <div class="flex flex-wrap justify-end gap-[6px] to-xs:justify-start">
+              {node.tags.map((t) => <span class="border border-bd px-2 py-1 text-label-sm tracking-[.04em] text-fg3">{t}</span>)}
+            </div>
+          </div>
+          {i < architecture.length - 1 && (
+            <div aria-hidden="true" class="relative mx-auto h-[30px] w-px">
+              <span class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-bd"></span>
+              <span
+                class="absolute left-1/2 top-0 h-[5px] w-[5px] -translate-x-1/2 animate-flow bg-ac"
+                style={`animation-delay:${(i * 0.35).toFixed(2)}s`}
+              ></span>
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </div>
+</section>
