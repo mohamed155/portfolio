@@ -1,0 +1,79 @@
+---
+// Dev-only atom gallery. Excluded from the sitemap (see astro.config.mjs).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/atoms/Button/Button.astro';
+import Chip from '../components/atoms/Chip/Chip.astro';
+import Badge from '../components/atoms/Badge/Badge.astro';
+import Caret from '../components/atoms/Caret/Caret.astro';
+import NavLink from '../components/atoms/NavLink/NavLink.astro';
+import TabButton from '../components/atoms/TabButton/TabButton.astro';
+---
+
+<BaseLayout title="Kitchen sink">
+  <main class="mx-auto flex max-w-page flex-col gap-12 px-8 py-12 text-fg">
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">button</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <Button variant="solid">solid</Button>
+        <Button variant="outline">outline</Button>
+        <Button variant="ghost">ghost</Button>
+        <Button variant="quiet">quiet</Button>
+        <Button variant="solid" size="sm">solid sm</Button>
+        <Button variant="outline" size="sm">outline sm</Button>
+        <Button variant="ghost" size="sm">ghost sm</Button>
+        <Button variant="quiet" size="sm">quiet sm</Button>
+        <Button variant="solid" disabled>disabled</Button>
+        <Button variant="solid" href="#">as link ↗</Button>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">chip</h2>
+      <div class="flex flex-wrap items-center gap-2">
+        <Chip>default md</Chip>
+        <Chip size="sm">default sm</Chip>
+        <Chip variant="quiet">quiet sm</Chip>
+        <Chip variant="lead">lead</Chip>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">badge</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        <Badge variant="accent">accent</Badge>
+        <Badge variant="outline">outline</Badge>
+        <Badge variant="muted">muted</Badge>
+        <Badge variant="status">available</Badge>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">caret</h2>
+      <div class="flex flex-wrap items-center gap-6">
+        <Caret size="sm" />
+        <Caret size="md" />
+        <Caret size="lg" />
+        <span class="text-body">inline<Caret size="inline" class="ml-1" />caret</span>
+        <Caret size="md" slow />
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">navlink</h2>
+      <nav class="flex gap-[2px]">
+        <NavLink href="#" index="01">about</NavLink>
+        <NavLink href="#" index="02" active>skills</NavLink>
+        <NavLink href="#" index="03">experience</NavLink>
+      </nav>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <h2 class="font-display text-h4 uppercase text-fg">tabbutton</h2>
+      <div class="max-w-[320px] border border-bd">
+        <TabButton active count="06">active tab</TabButton>
+        <TabButton primary count="11">primary tab</TabButton>
+        <TabButton count="03">inactive tab</TabButton>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

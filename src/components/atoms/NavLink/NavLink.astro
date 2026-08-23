@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string;
+  index?: string;
+  active?: boolean;
+  class?: string;
+}
+
+const { href, index, active = false, class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  aria-current={active ? 'true' : undefined}
+  class:list={[
+    'inline-flex items-baseline gap-[7px] border px-[11px] py-1.5 text-label uppercase tracking-nav transition-colors duration-[180ms]',
+    active
+      ? 'border-ac bg-ac text-acfg'
+      : 'border-transparent text-fg2 hover:border-ac hover:bg-ac hover:text-acfg',
+    className,
+  ]}
+>
+  {index && <span class="text-micro opacity-55">{index}</span>}
+  <slot />
+</a>

@@ -1,0 +1,28 @@
+---
+// Static shell only — Capabilities (organism level) owns tab-switching state
+// and re-renders this look inline in its island, the same way Header.island
+// does for nav items rather than importing an .astro atom into React.
+interface Props {
+  count?: string;
+  active?: boolean;
+  primary?: boolean;
+  class?: string;
+}
+
+const { count, active = false, primary = false, class: className } = Astro.props;
+const glyph = active ? '>' : primary ? '*' : '';
+---
+
+<button
+  type="button"
+  aria-pressed={active}
+  class:list={[
+    'flex min-h-[50px] w-full items-center gap-[9px] border-b border-bd px-[18px] py-[15px] text-left text-body-xs tracking-ui transition-colors duration-[180ms]',
+    active ? 'bg-ac font-semibold text-acfg' : 'text-fg2',
+    className,
+  ]}
+>
+  <span class="w-[1em] flex-none" aria-hidden="true">{glyph}</span>
+  <span class="flex-1"><slot /></span>
+  {count && <span class="flex-none text-label-sm opacity-65">{count}</span>}
+</button>

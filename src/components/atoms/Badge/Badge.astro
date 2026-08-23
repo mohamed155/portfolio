@@ -1,0 +1,25 @@
+---
+interface Props {
+  variant?: 'accent' | 'outline' | 'muted' | 'status';
+  class?: string;
+}
+
+const { variant = 'accent', class: className } = Astro.props;
+
+const nonStatusBase = 'inline-flex items-center border px-2 py-[3px] text-micro uppercase tracking-[.12em]';
+
+const styles: Record<string, string> = {
+  accent: `${nonStatusBase} border-ac bg-ac text-acfg`,
+  outline: `${nonStatusBase} border-ac bg-transparent text-ac`,
+  muted: `${nonStatusBase} border-bd bg-transparent text-fg3`,
+  status: 'inline-flex items-center gap-[6px] text-label-sm tracking-caps text-ac',
+};
+---
+
+{variant === 'status' ? (
+  <span class:list={[styles.status, className]}>
+    <span aria-hidden="true">●</span><slot />
+  </span>
+) : (
+  <span class:list={[styles[variant], className]}><slot /></span>
+)}
