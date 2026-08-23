@@ -1,0 +1,19 @@
+---
+// The only mark in this system — no logo file exists anywhere in the sources.
+interface Props {
+  size?: 'header' | 'footer';
+  class?: string;
+}
+
+const { size = 'header', class: className } = Astro.props;
+const dims = size === 'footer' ? 'h-6 w-6' : 'h-[26px] w-[26px]';
+---
+
+<span
+  class:list={[
+    'inline-flex flex-none items-center justify-center bg-ac font-display text-[12px] font-bold text-acfg',
+    dims,
+    className,
+  ]}
+  aria-hidden="true"
+>MR</span>

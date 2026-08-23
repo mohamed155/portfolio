@@ -56,8 +56,10 @@ const FORBIDDEN = [
 ];
 
 // Tailwind 4's default border colour is currentColor, so a bare `border`
-// utility paints the text colour instead of the hairline.
-const BORDER_OK = /\bborder-(?:bd2?|ac|acfg|fg[23]?|panel2?|bg|transparent|current|inherit|\[)/;
+// utility paints the text colour instead of the hairline. Side-prefixed forms
+// (border-t-bd2, border-l-ac) count too — they set an explicit colour on that
+// side directly, same as border-bd does for all sides.
+const BORDER_OK = /\bborder-(?:[xytrbles]-)?(?:bd2?|ac|acfg|fg[23]?|panel2?|bg|transparent|current|inherit|\[)/;
 const BARE_BORDER = /\bborder(?:-[xytrbles]|-\d+)?(?=\s|"|'|`|$)/;
 
 function walk(dir, out = []) {

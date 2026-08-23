@@ -1,0 +1,14 @@
+---
+interface Props {
+  term: string;
+  value: string;
+  class?: string;
+}
+
+const { term, value, class: className } = Astro.props;
+---
+
+<div class:list={['grid grid-cols-[132px_1fr] gap-4 border-b border-b-bd py-[11px]', className]}>
+  <p class="pt-[2px] text-label-sm uppercase tracking-caps text-fg3">{term}</p>
+  <p class="text-ui text-fg">{value}</p>
+</div>
