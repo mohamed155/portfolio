@@ -1,0 +1,65 @@
+---
+// Opening block every case study renders, before the numbered sections:
+// prompt line, title, lead, 4-up meta strip, action row, hero frame.
+// Ported from Case Study - AI Customer Service Platform.dc.html.
+//
+// pt-[72px] matches Hero.astro's own top offset (not the source's 112px):
+// both sit inside PageLayout's pt-header, and the source's standalone
+// case-study page has no such base padding to subtract, so reusing Hero's
+// already-verified value keeps clearance consistent across page types.
+import Caret from '../../atoms/Caret/Caret.astro';
+import Button from '../../atoms/Button/Button.astro';
+import ScreenshotFrame from '../../molecules/ScreenshotFrame/ScreenshotFrame.astro';
+
+interface Props {
+  index: string;
+  kind: string;
+  title: string;
+  lead: string;
+  meta: { k: string; v: string }[];
+  links: { github?: string; live?: string; liveNote?: string };
+  hero: { path: string; caption: string; src?: ImageMetadata };
+}
+
+const { index, kind, title, lead, meta, links, hero } = Astro.props;
+---
+
+<section class="pt-[72px]">
+  <div class="flex items-center gap-2 text-[11.5px] uppercase tracking-caps text-fg3">
+    <span class="text-ac">$</span><span>open case-study/{index}</span><Caret />
+  </div>
+
+  <div class="mt-[22px] flex items-baseline gap-[14px]">
+    <span class="text-[11px] uppercase tracking-caps text-ac">project {index}</span>
+    <span class="text-[11px] uppercase tracking-caps text-fg3">{kind}</span>
+  </div>
+
+  <h1 class="mt-[18px] max-w-[18ch] font-display text-[clamp(34px,7vw,96px)] font-bold uppercase leading-[.94] tracking-hero text-fg">
+    {title}
+  </h1>
+
+  <p class="mt-7 max-w-[62ch] text-[clamp(14px,1.15vw,16px)] leading-[1.85] text-fg2">{lead}</p>
+
+  <div class="mt-12 grid grid-cols-4 border-t border-t-bd2 border-b border-b-bd2 to-md:grid-cols-2 to-xs:grid-cols-1">
+    {meta.map((m) => (
+      <div class="border-l border-l-bd px-[22px] py-6">
+        <div class="text-[10px] uppercase tracking-caps-wide text-ac">{m.k}</div>
+        <div class="mt-[11px] text-body-sm leading-[1.6] text-fg">{m.v}</div>
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-[26px] flex flex-wrap items-center gap-3">
+    {links.github && (
+      <Button href={links.github} target="_blank" rel="noopener noreferrer" variant="outline">github &#8599;</Button>
+    )}
+    {links.live && (
+      <Button href={links.live} target="_blank" rel="noopener noreferrer" variant="outline">live demo &#8599;</Button>
+    )}
+    {links.liveNote && <span class="text-[11.5px] tracking-[.06em] text-fg3">{links.liveNote}</span>}
+  </div>
+
+  <div class="mt-12">
+    <ScreenshotFrame path={hero.path} caption={hero.caption} ratio="16/9" src={hero.src} />
+  </div>
+</section>

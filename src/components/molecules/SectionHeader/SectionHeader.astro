@@ -4,13 +4,15 @@ interface Props {
   title: string;
   meta?: string;
   strong?: boolean;
+  metaAccent?: boolean;
   class?: string;
 }
 
-const { index, title, meta, strong = false, class: className } = Astro.props;
+const { index, title, meta, strong = false, metaAccent = false, class: className } = Astro.props;
 ---
 
 <div
+  data-reveal
   class:list={[
     'flex items-baseline gap-[18px] border-b pb-[14px]',
     strong ? 'border-b-bd2' : 'border-b-bd',
@@ -19,5 +21,7 @@ const { index, title, meta, strong = false, class: className } = Astro.props;
 >
   <span class="text-[11px] tracking-caps text-ac">{index}</span>
   <h2 class="font-display text-body-xs font-bold uppercase tracking-caps-widest text-fg">{title}</h2>
-  {meta && <span class="ml-auto text-label-sm tracking-caps text-fg3">{meta}</span>}
+  {meta && (
+    <span class:list={['ml-auto text-label-sm tracking-caps', metaAccent ? 'text-ac' : 'text-fg3']}>{meta}</span>
+  )}
 </div>

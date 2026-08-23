@@ -1,0 +1,157 @@
+---
+index: '02'
+title: 'Inventory Desktop Application'
+kind: 'desktop · local-first'
+lead: 'Inventory management software for a workstation rather than a browser tab: data lives on the machine, entry is keyboard-first, and the app keeps working when the network does not.'
+order: 2
+draft: false
+
+meta:
+  - k: 'role'
+    v: 'Sole engineer — architecture, UI, data layer, packaging'
+  - k: 'type'
+    v: 'Cross-platform desktop application'
+  - k: 'stack'
+    v: 'Electron · React · TypeScript · Prisma · SQLite'
+  - k: 'timeframe'
+    v: 'Personal / client project'
+
+context:
+  - k: 'what it is'
+    v: 'Desktop software for tracking inventory: items, quantities, movements and reporting, in a dense interface built for repeated data entry.'
+  - k: 'who it serves'
+    v: 'Small operations where one or two people manage stock on a shared machine and cannot depend on a stable internet connection.'
+  - k: 'why it matters'
+    v: 'Web inventory tools fail exactly when stock work happens — during a count, in a stockroom, offline. Local-first storage removes that failure mode.'
+
+challenges:
+  - n: '01'
+    t: 'Local-first without data loss'
+    d: 'The single source of truth is a file on someone''s machine. Schema changes, interrupted writes and backups all have to be handled without a server to fall back on.'
+  - n: '02'
+    t: 'Dense data entry that still feels fast'
+    d: 'Long tables and multi-field forms in a renderer process degrade quickly if every keystroke re-renders the grid.'
+  - n: '03'
+    t: 'One set of validation rules'
+    d: 'Rules enforced only in the UI drift from the database. Enforced only in the database, they surface as unhelpful errors after the fact.'
+  - n: '04'
+    t: 'Shipping an installable build'
+    d: 'Packaging, native module rebuilds and first-run migrations are part of the product, not an afterthought.'
+
+role:
+  heading: 'Sole engineer.'
+  blurb: 'From the data schema to the packaged installer, including the parts that are usually someone else''s job.'
+  items:
+    - t: 'Data modelling'
+      d: 'Prisma schema, relations and migration strategy for a database that ships with the app.'
+    - t: 'Interface engineering'
+      d: 'Table virtualisation, form architecture and keyboard-first interaction across the app.'
+    - t: 'Process boundary'
+      d: 'Designed the typed IPC surface between renderer and main with context isolation on.'
+    - t: 'Release'
+      d: 'Build configuration, packaging and a first-run flow that migrates or seeds the database.'
+
+architecture:
+  - layer: 'L1 · renderer'
+    title: 'React interface'
+    desc: 'Stock tables, item forms, filters and reports in a windowed layout.'
+    tags: ['React', 'TypeScript']
+  - layer: 'L2 · state'
+    title: 'View & form state'
+    desc: 'Local component state with one shared validation schema per entity.'
+    tags: ['Forms', 'Schema']
+  - layer: 'L3 · bridge'
+    title: 'Typed IPC boundary'
+    desc: 'A narrow set of named channels; the renderer never touches the filesystem.'
+    tags: ['IPC', 'contextIsolation']
+  - layer: 'L4 · main process'
+    title: 'Electron main'
+    desc: 'Window lifecycle, migrations on launch, backup and export routines.'
+    tags: ['Electron', 'Node.js']
+  - layer: 'L5 · data'
+    title: 'Local database'
+    desc: 'A single SQLite file accessed through a generated, typed client.'
+    tags: ['Prisma', 'SQLite']
+
+decisions:
+  - n: 'decision 01'
+    problem: 'The workflow needs file access, printing and offline operation.'
+    decision: 'Electron, rather than a browser app with a local server.'
+    reason: 'Native dialogs, filesystem access and a real installable build, while keeping one React codebase and web tooling.'
+    tradeoff: 'A large bundle and a per-platform release process — accepted, since the audience installs once and uses daily.'
+  - n: 'decision 02'
+    problem: 'Choosing a store for data that must never require a network.'
+    decision: 'SQLite as the primary database, on the user''s disk.'
+    reason: 'Transactional guarantees, instant queries, and a backup that is just a file copy.'
+    tradeoff: 'No multi-user access or sync; a future server would mean designing a real merge strategy.'
+  - n: 'decision 03'
+    problem: 'Hand-written SQL and hand-written types drifting apart.'
+    decision: 'Prisma as the schema source of truth, with generated types and versioned migrations.'
+    reason: 'The compiler catches shape mismatches, and migrations become reviewable artefacts instead of ad-hoc statements.'
+    tradeoff: 'A native dependency to rebuild at package time, and less control over exotic queries.'
+  - n: 'decision 04'
+    problem: 'Validation duplicated between form components and the data layer.'
+    decision: 'One schema per entity, shared by the form and the write path across the IPC boundary.'
+    reason: 'A rule change lands in one place, and the message a user sees matches what the database will accept.'
+    tradeoff: 'Some validation runs twice, and the shared module has to stay free of renderer-only imports.'
+
+features:
+  - n: '06'
+    section: 'Forms & Validation'
+    heading: 'Data entry is the product.'
+    body: 'Stock work is hundreds of small edits a day, so the item form is tuned for the keyboard: tab order that follows the paper flow, inline validation on blur, and errors that name the field rather than the rule.'
+    flip: false
+    shot:
+      path: 'Inventory.app — item'
+      caption: 'item form with validation states'
+      ratio: '16/10'
+  - n: '07'
+    section: 'Local-First Storage'
+    heading: 'The database is a file on the desk.'
+    body: 'SQLite means every read is instant and the app never blocks on a network. Backups are a file copy, and migrations run on launch before the window is shown.'
+    flip: true
+    shot:
+      path: 'Inventory.app — stock / filtered'
+      caption: 'stock table, filtered view'
+      ratio: '16/10'
+
+quality:
+  - t: 'Accessibility'
+    d: 'Full keyboard operation, labelled inputs, and error text tied to fields via aria-describedby.'
+  - t: 'Performance'
+    d: 'Virtualised tables, memoised rows, and debounced filters so typing never blocks the grid.'
+  - t: 'Testing'
+    d: 'Unit tests on validation and data mapping; smoke coverage of the create-and-edit flow.'
+  - t: 'Error handling'
+    d: 'Write failures surface as recoverable states with the entered data preserved.'
+  - t: 'State management'
+    d: 'Local state by default; shared state only where two panes genuinely read the same record.'
+  - t: 'Component architecture'
+    d: 'A small primitive set — table, field, dialog — composed into every screen.'
+  - t: 'Responsive design'
+    d: 'Layout adapts from a narrow window to a wide monitor without horizontal scrolling.'
+  - t: 'Maintainability'
+    d: 'Domain logic kept out of components; schema-driven types across the process boundary.'
+
+outcome:
+  - k: 'results'
+    v: 'A packaged desktop application that manages inventory entirely offline, with validated entry and local reporting.'
+  - k: 'technical'
+    v: 'End-to-end type safety from SQLite schema through IPC into the renderer, with migrations that run before the first window paints.'
+  - k: 'lessons'
+    v: 'Most of the engineering effort went into the boring parts — migrations, backups, packaging. Getting those right is what makes desktop software trustworthy.'
+  - k: 'status'
+    v: 'Complete and in use. A sync layer is the obvious next step if more than one workstation is needed.'
+
+status: '● complete and in use'
+
+hero:
+  path: 'Inventory.app — stock'
+  caption: 'main stock window'
+
+links:
+  github: 'https://github.com/mohamed155'
+  liveNote: 'Distributed as a packaged desktop build'
+
+next: null
+---

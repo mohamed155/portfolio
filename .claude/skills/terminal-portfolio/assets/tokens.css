@@ -89,6 +89,21 @@ html[data-theme="light"] {
 [data-reveal] { opacity: 0 }
 [data-reveal].is-in { opacity: 1; animation: print .5s steps(22, end) both }
 
+/* Same reveal mechanic, but for Hero's own intro content — staged by
+   Hero.island.tsx's typing sequence rather than by reveal.ts's
+   IntersectionObserver (deliberately not selected by `[data-reveal]`, since
+   these sit above the fold and would otherwise reveal on load before typing
+   finishes).
+
+   Visible by default — unlike [data-reveal], this content must not depend
+   on JS ever running: if the island fails to hydrate or JS is disabled, the
+   hero's description, actions and profile panel still need to render.
+   Hero.island.tsx only ever adds `is-out` once it has actually decided to
+   replay the typing animation. */
+[data-hero-reveal] { opacity: 1 }
+[data-hero-reveal].is-out { opacity: 0 }
+[data-hero-reveal].is-in { opacity: 1; animation: print .5s steps(22, end) both }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;

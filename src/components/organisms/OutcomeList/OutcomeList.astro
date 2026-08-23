@@ -1,0 +1,28 @@
+---
+// 09 · outcome — heading + 4 rows + status. content.config.ts:
+// outcome.length(4), status: string. "Where it stands." is fixed chrome,
+// verbatim from the design source — same treatment as DecisionGrid's intro line.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  outcome: { k: string; v: string }[];
+  status: string;
+}
+
+const { outcome, status } = Astro.props;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="09" title="Outcome" meta={status} metaAccent class="mb-11" />
+  <div class="grid grid-cols-[.8fr_1.2fr] items-start gap-14 to-xl:grid-cols-1 to-xl:gap-10">
+    <h2 data-reveal class="font-display text-h2-tight font-bold uppercase leading-[1.12] tracking-tight2 text-fg">Where it stands.</h2>
+    <div>
+      {outcome.map((o) => (
+        <div data-reveal class="grid grid-cols-[132px_1fr] gap-5 border-b border-b-bd py-5 to-xs:grid-cols-1 to-xs:gap-2">
+          <span class="pt-[3px] text-label-sm uppercase tracking-[.14em] text-fg3">{o.k}</span>
+          <span class="max-w-[60ch] text-body-sm leading-[1.8] text-fg2">{o.v}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

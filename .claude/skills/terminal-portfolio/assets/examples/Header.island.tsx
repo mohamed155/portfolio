@@ -20,10 +20,19 @@ const NAV: [string, string][] = [
 ];
 
 export default function HeaderIsland({ active }: { active?: string }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document === 'undefined') return 'dark';
-    return (document.documentElement.getAttribute('data-theme') as Theme) ?? 'dark';
-  });
+  // Always starts 'dark', matching what client:load's SSR pass renders
+  // (document doesn't exist there). Reading the real value in the
+  // initializer instead would make the client's first render disagree with
+  // the server's whenever the visitor's saved theme is 'light' — a React
+  // hydration mismatch on every such page load. Sync to the true value
+  // after mount instead; the toggle button's label may correct itself one
+  // frame after paint, but the colours (driven by the head script) never do.
+  const [theme, setTheme] = useState<Theme>('dark');
+
+  useEffect(() => {
+    const current = document.documentElement.getAttribute('data-theme') as Theme | null;
+    if (current && current !== 'dark') setTheme(current);
+  }, []);
   const [menu, setMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);

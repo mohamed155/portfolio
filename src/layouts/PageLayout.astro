@@ -1,0 +1,35 @@
+---
+// Level 4 template. BaseLayout + Header + the 1360px container + Footer +
+// StatusBar — the chrome every real page shares. Owns no page copy; pages
+// supply their sections through the slot.
+//
+// BootSequence deliberately stays OUT of this template: '/' is the only
+// route that boots, and shipping that island's JS to every route for
+// nothing would be dead weight (see references/interactivity.md). Pages
+// that need it render <BootSequence /> as the first thing in their slot.
+//
+// Footer's own bottom padding (56px, Footer.astro's pb-14) already clears
+// StatusBar's fixed 28px height — confirmed against Portfolio v2.dc.html,
+// which relies on the same margin instead of an extra spacer element.
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/organisms/Header/Header.astro';
+import Footer from '../components/organisms/Footer/Footer.astro';
+import StatusBar from '../components/organisms/StatusBar/StatusBar.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: string;
+}
+
+const { title, description, active } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <Header active={active} />
+  <main class="mx-auto max-w-page px-8 pt-header to-xs:px-4.5">
+    <slot />
+  </main>
+  <Footer />
+  <StatusBar />
+</BaseLayout>

@@ -18,7 +18,7 @@ interface Props {
 const { index, dates, place, company, title, summary, tech = [], current = false } = Astro.props;
 ---
 
-<li class="group list-none border-b border-b-bd bg-transparent transition-colors duration-200 hover:bg-panel">
+<li data-reveal class="group list-none border-b border-b-bd bg-transparent transition-colors duration-200 hover:bg-panel">
   <div class="grid grid-cols-[40px_200px_240px_1fr] items-start gap-[26px] px-2 py-6 to-lg:grid-cols-[40px_1fr] to-sm:grid-cols-1">
     <span class="pt-[3px] text-[11px] tracking-[.08em] text-fg3 transition-colors duration-200 group-hover:text-ac">{index}</span>
 

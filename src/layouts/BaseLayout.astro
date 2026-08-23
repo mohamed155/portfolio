@@ -42,6 +42,19 @@ const { title, description } = Astro.props;
       // Astro keeps the document alive across navigations.
       document.addEventListener('astro:after-swap', () => {
         sessionStorage.setItem('mr-navigated', '1');
+
+        // ClientRouter swaps <html>'s attributes to match the incoming
+        // page's static markup, which never has data-theme baked in (it's
+        // only ever set at runtime by theme-init.ts's inline <head> script,
+        // which doesn't re-run on a soft navigation). Without this, every
+        // client-side navigation drops back to the dark default regardless
+        // of the stored preference.
+        try {
+          const t = localStorage.getItem('mr-theme');
+          document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+        } catch {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
       });
     </script>
   </body>

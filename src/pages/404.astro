@@ -1,0 +1,25 @@
+---
+// Level 5 page. Terminal-styled 404: prompt line, "no such file or
+// directory", link home. Deliberately bypasses PageLayout's header/footer/
+// status-bar chrome — a lost visitor gets one focused screen, not the full
+// site nav.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Caret from '../components/atoms/Caret/Caret.astro';
+import Button from '../components/atoms/Button/Button.astro';
+---
+
+<BaseLayout title="404 — Mohamed Ramadan" description="Page not found.">
+  <main class="flex min-h-screen flex-col items-center justify-center px-8 text-center">
+    <div class="flex items-center gap-2 text-[11.5px] uppercase tracking-caps text-fg3">
+      <span class="text-ac">$</span><span>cat {Astro.url.pathname}</span><Caret />
+    </div>
+
+    <h1 class="mt-6 font-display text-[clamp(48px,10vw,120px)] font-bold leading-none tracking-hero text-fg">404</h1>
+
+    <p class="mt-5 text-body text-fg2">no such file or directory</p>
+
+    <div class="mt-9">
+      <Button href="/">cd ~ &rarr;</Button>
+    </div>
+  </main>
+</BaseLayout>

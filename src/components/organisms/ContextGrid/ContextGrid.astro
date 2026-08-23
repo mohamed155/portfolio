@@ -1,0 +1,22 @@
+---
+// 01 · product context — always three cards (content.config.ts: context.length(3)).
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+
+interface Props {
+  context: { k: string; v: string }[];
+}
+
+const { context } = Astro.props;
+---
+
+<section class="border-t border-t-bd2 py-[84px]">
+  <SectionHeader index="01" title="Product Context" meta="context.md" class="mb-8" />
+  <div class="grid grid-cols-3 gap-4 to-xs:grid-cols-1">
+    {context.map((c) => (
+      <div data-reveal class="border border-bd bg-panel p-6">
+        <div class="text-[10px] uppercase tracking-caps-wide text-ac">{c.k}</div>
+        <p class="mt-3 text-body-sm leading-[1.8] text-fg2">{c.v}</p>
+      </div>
+    ))}
+  </div>
+</section>

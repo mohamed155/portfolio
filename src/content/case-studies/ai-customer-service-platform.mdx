@@ -1,0 +1,163 @@
+---
+index: '01'
+title: 'AI Customer Service Platform'
+kind: 'ai · multi-tenant saas'
+lead: 'A multi-tenant support platform where several businesses share one deployment: a unified conversation inbox across WhatsApp and Telegram, an AI assistant grounded in each tenant''s own knowledge base, and an admin surface for the teams running it.'
+order: 1
+draft: false
+
+meta:
+  - k: 'role'
+    v: 'Frontend architecture & lead implementation'
+  - k: 'type'
+    v: 'Multi-tenant SaaS platform'
+  - k: 'stack'
+    v: 'Angular · NgRx · Rust · Axum · PostgreSQL · pgvector'
+  - k: 'timeframe'
+    v: '2025 — ongoing'
+
+context:
+  - k: 'what it is'
+    v: 'A customer-service workspace that collects messages from WhatsApp and Telegram into one inbox, with an AI assistant that drafts replies from the tenant''s knowledge base.'
+  - k: 'who it serves'
+    v: 'Support agents handling day-to-day conversations, and the admins who configure channels, articles and team access for each tenant.'
+  - k: 'why it matters'
+    v: 'Customers already message businesses on chat apps. Consolidating those threads and grounding answers in real documentation is what makes small teams able to keep up.'
+
+challenges:
+  - n: '01'
+    t: 'Tenant isolation the UI can be trusted on'
+    d: 'Every request, cache entry and socket subscription has to be scoped to the active tenant. A single stale cache key is a data-leak bug, not a rendering bug.'
+  - n: '02'
+    t: 'Live conversation state'
+    d: 'Messages arrive from external channels at any moment while an agent is typing, filtering or switching threads. Optimistic updates must reconcile with server order.'
+  - n: '03'
+    t: 'Grounding AI answers'
+    d: 'A generic model answer is worse than none. Replies need retrieval over the tenant''s own content and a visible trail back to the source passage.'
+  - n: '04'
+    t: 'Channel differences'
+    d: 'WhatsApp and Telegram differ in message types, delivery semantics and attachment handling. The UI needs one mental model without lying about what a channel supports.'
+
+role:
+  heading: 'Frontend architecture, end to end.'
+  blurb: 'I owned the Angular application and worked down the stack into the Rust API where the frontend''s data shape demanded it.'
+  items:
+    - t: 'Frontend architecture'
+      d: 'Feature boundaries, tenant-scoped store design, routing and the shared component layer.'
+    - t: 'AI product surface'
+      d: 'The assistant panel: suggestion states, streaming output, source citations and failure handling.'
+    - t: 'API contract'
+      d: 'Defined the response shapes with the backend and implemented parts of the Axum service and its queries.'
+    - t: 'Quality bar'
+      d: 'Accessibility for the inbox keyboard flow, render performance on long threads, and the testing strategy.'
+
+architecture:
+  - layer: 'L1 · presentation'
+    title: 'User interface'
+    desc: 'Inbox, conversation view, knowledge base, admin.'
+    tags: ['Angular', 'Tailwind']
+  - layer: 'L2 · components'
+    title: 'Component & design-system layer'
+    desc: 'Presentational components with typed inputs, OnPush change detection.'
+    tags: ['Standalone', 'OnPush']
+  - layer: 'L3 · state'
+    title: 'State management'
+    desc: 'Tenant-scoped feature stores; signals for local UI state.'
+    tags: ['NgRx', 'Signals']
+  - layer: 'L4 · transport'
+    title: 'API layer'
+    desc: 'Typed HTTP clients plus a socket channel for live messages.'
+    tags: ['HTTP', 'WebSocket']
+  - layer: 'L5 · services'
+    title: 'Backend services'
+    desc: 'Tenant resolution, channel webhooks, retrieval and completion.'
+    tags: ['Rust', 'Axum']
+  - layer: 'L6 · data'
+    title: 'Data & AI'
+    desc: 'Relational data with row-level tenant scoping; embeddings alongside it.'
+    tags: ['PostgreSQL', 'pgvector', 'LLM']
+
+decisions:
+  - n: 'decision 01'
+    problem: 'Tenant context leaking between sessions in a shared client cache.'
+    decision: 'Tenant identity is part of the store shape, and switching tenant destroys and re-creates feature state rather than merging it.'
+    reason: 'Isolation becomes structural instead of a rule every developer has to remember on every new selector.'
+    tradeoff: 'A full refetch on tenant switch, and no cross-tenant views without deliberate new work.'
+  - n: 'decision 02'
+    problem: 'Webhook ingest plus embedding work on the same request path as agent traffic.'
+    decision: 'Rust with Axum for the API layer instead of extending an existing Node service.'
+    reason: 'Predictable latency and memory under concurrent channel webhooks, with strong compile-time guarantees on tenant-scoped queries.'
+    tradeoff: 'A smaller pool of contributors and slower iteration on early, still-changing endpoints.'
+  - n: 'decision 03'
+    problem: 'Retrieval needs vector search, but the product already depends on relational data.'
+    decision: 'pgvector inside the same PostgreSQL instance rather than a dedicated vector database.'
+    reason: 'Embeddings stay joinable to tenant and document rows, so one transaction and one backup story covers everything.'
+    tradeoff: 'Index tuning is bound to Postgres, and very large corpora would eventually need a separate service.'
+  - n: 'decision 04'
+    problem: 'Two kinds of state — server truth and transient UI — were tangled in one store.'
+    decision: 'NgRx for conversation and channel data; signals for local UI state such as panels, drafts and filters.'
+    reason: 'Server state gets traceable, debuggable transitions; ephemeral UI state stays where it is used with far less ceremony.'
+    tradeoff: 'Two state idioms in one codebase, which needs a written convention to stay legible to new engineers.'
+
+features:
+  - n: '06'
+    section: 'Knowledge Base'
+    heading: 'Answers are only as good as the source.'
+    body: 'Each tenant curates its own articles. Documents are chunked and embedded on ingest, and every assistant reply surfaces the passages it drew from, so an agent can verify before sending.'
+    flip: false
+    shot:
+      path: 'app.support / knowledge'
+      caption: 'knowledge base + cited sources'
+      ratio: '16/10'
+  - n: '07'
+    section: 'Admin & Tenants'
+    heading: 'Switching tenant is a hard reset, by design.'
+    body: 'Changing tenant tears down feature state and re-subscribes rather than merging caches. It costs a refetch and removes an entire class of cross-tenant bug.'
+    flip: true
+    shot:
+      path: 'app.support / admin'
+      caption: 'admin dashboard + tenant switcher'
+      ratio: '16/10'
+
+quality:
+  - t: 'Accessibility'
+    d: 'Keyboard navigation across inbox, thread and composer; live regions announce new messages; visible focus throughout.'
+  - t: 'Performance'
+    d: 'Virtualised message lists, OnPush components, and lazily loaded feature routes.'
+  - t: 'Testing'
+    d: 'Unit tests on reducers and selectors, component contract tests, Playwright on the send-and-reply path.'
+  - t: 'Error handling'
+    d: 'Typed failure states for send, retrieval and model timeouts, each with a recovery action rather than a toast.'
+  - t: 'State management'
+    d: 'One direction of data flow; derived data via selectors; no component reaching into another''s state.'
+  - t: 'Component architecture'
+    d: 'Standalone components split into container and presentational roles with typed inputs and outputs.'
+  - t: 'Responsive design'
+    d: 'Three-pane desktop layout collapses to a stacked, one-view-at-a-time flow on small screens.'
+  - t: 'Maintainability'
+    d: 'Feature-sliced folders, shared design-system primitives, and lint rules that block cross-feature imports.'
+
+outcome:
+  - k: 'results'
+    v: 'A working multi-tenant platform: agents answer WhatsApp and Telegram conversations from one inbox, with assistant drafts grounded in tenant documentation.'
+  - k: 'technical'
+    v: 'Tenant isolation enforced by store structure and row-level scoping; retrieval served from the same database as the relational data.'
+  - k: 'lessons'
+    v: 'Splitting server state from UI state early prevented most of the bugs I expected from live channels. Retrieval quality depended far more on chunking and source curation than on model choice.'
+  - k: 'status'
+    v: 'In active development. Next up: per-tenant analytics, more channels, and a reply-suggestion evaluation loop.'
+
+status: '● in active development'
+
+hero:
+  path: 'app.support / inbox'
+  caption: 'full inbox view with AI assistant panel'
+
+links:
+  github: 'https://github.com/mohamed155'
+  liveNote: 'Live demo — not public (multi-tenant data)'
+
+next:
+  slug: 'inventory-desktop-application'
+  title: 'Inventory Desktop Application'
+---

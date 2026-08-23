@@ -3,45 +3,7 @@
 // markup rather than importing the .astro atoms/molecules, the same
 // constraint Header.island.tsx works under.
 import { useRef, useState } from 'react';
-
-const CATS = [
-  {
-    name: 'Frontend', level: 'Core Specialty', primary: true, lead: 4,
-    blurb: 'The core of my work: Angular applications built with typed, reactive component architecture — signals and RxJS side by side, OnPush by default, and styling systems that stay predictable at scale.',
-    applied: 'SNB Retailer e-banking apps · AI Customer Service Platform · Retailer/Ads Portal',
-    skills: ['Angular', 'TypeScript', 'JavaScript', 'RxJS', 'Signals', 'React', 'HTML', 'CSS', 'Tailwind CSS'],
-  },
-  {
-    name: 'Architecture & State', level: 'Core Specialty', primary: true, lead: 3,
-    blurb: 'Deciding where state lives and how features stay independent — store boundaries, feature-sliced modules, shared design-system layers, and reactive data flow that is easy to trace.',
-    applied: 'Multi-tenant state isolation · Portal feature boundaries',
-    skills: ['NgRx', 'Signal Store', 'Component Architecture', 'Design Systems', 'Reactive Architecture', 'Micro Frontends'],
-  },
-  {
-    name: 'UI Engineering', level: 'Advanced', primary: false, lead: 3,
-    blurb: 'Turning design intent into resilient interface code: responsive composition, keyboard and screen-reader support, render performance budgets, and motion that carries meaning.',
-    applied: 'Banking flows on desktop and mobile · Media player UI',
-    skills: ['Responsive Design', 'Accessibility', 'Web Performance', 'Animation', 'Design Systems', 'UX Implementation'],
-  },
-  {
-    name: 'Testing', level: 'Advanced', primary: false, lead: 2,
-    blurb: 'A layered strategy rather than a coverage number: fast unit tests around logic, integration tests around component contracts, and end-to-end coverage on the flows that must never break.',
-    applied: 'Banking transaction flows · Portal regression suites',
-    skills: ['Unit Testing', 'Integration Testing', 'E2E Testing', 'Playwright', 'Frontend Testing Strategy'],
-  },
-  {
-    name: 'Backend', level: 'Supporting', primary: false, lead: 0,
-    blurb: 'Supporting capability. I build the services my frontends consume — typed APIs, relational schemas and migrations — in Node, NestJS and Rust.',
-    applied: 'Rust/Axum API for the AI Customer Service Platform',
-    skills: ['Node.js', 'NestJS', 'Rust', 'Axum', 'PostgreSQL', 'SQLx', 'Prisma'],
-  },
-  {
-    name: 'AI', level: 'Supporting', primary: false, lead: 0,
-    blurb: 'Supporting capability. Integrating hosted and local models into product surfaces: retrieval over real data, model selection, streaming responses and graceful failure.',
-    applied: 'Retrieval assistant with pgvector · Local Ollama transcription',
-    skills: ['LLM Integration', 'Ollama', 'Local Models', 'RAG Concepts', 'AI Product Development', 'AI-assisted Engineering'],
-  },
-];
+import { CATS } from '../../../lib/capabilities';
 
 export default function CapabilitiesIsland() {
   const [active, setActive] = useState(0);
@@ -60,17 +22,17 @@ export default function CapabilitiesIsland() {
   }
 
   return (
-    <section id="skills" data-section="02 capabilities" className="border-t border-t-bd2 py-[84px]">
-      <div className="mb-8 flex items-baseline gap-[18px] border-b border-b-bd pb-[14px]">
+    <section id="skills" data-section="skills" className="border-t border-t-bd2 py-[84px]">
+      <div data-reveal className="mb-8 flex items-baseline gap-[18px] border-b border-b-bd pb-[14px]">
         <span className="text-[11px] tracking-caps text-ac">02</span>
         <h2 className="font-display text-body-xs font-bold uppercase tracking-caps-widest text-fg">capabilities</h2>
         <span className="ml-auto text-label-sm tracking-caps text-fg3">06 domains</span>
       </div>
 
-      <h3 className="m-0 max-w-[24ch] font-display text-h2-tight font-bold leading-[1.14] tracking-heading text-fg">
+      <h3 data-reveal className="m-0 max-w-[24ch] font-display text-h2-tight font-bold leading-[1.14] tracking-heading text-fg">
         Specialized engineering capabilities.
       </h3>
-      <p className="mt-4 max-w-[66ch] text-body leading-[1.8] text-fg2">
+      <p data-reveal className="mt-4 max-w-[66ch] text-body leading-[1.8] text-fg2">
         Grouped by engineering domain. Frontend architecture is the primary specialty; full-stack and AI are supporting capabilities.
       </p>
 

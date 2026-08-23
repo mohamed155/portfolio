@@ -1,0 +1,34 @@
+---
+// 01 · about — the narrative section nav's "about" link actually points to.
+// Distinct from Hero's intro block (which has no section id of its own).
+// Real copy, ported verbatim from Portfolio v2.dc.html.
+import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
+import Chip from '../../atoms/Chip/Chip.astro';
+
+const TAGS = ['Angular', 'TypeScript', 'Design Systems', 'Performance', 'Accessibility', 'Rust', 'LLM Integration'];
+---
+
+<section id="about" data-section="about" class="py-[84px]">
+  <SectionHeader index="01" title="about" meta="background.md" class="mb-11" />
+  <div class="grid grid-cols-[1.05fr_.95fr] items-start gap-[60px] to-lg:grid-cols-1 to-lg:gap-7">
+    <h2 data-reveal class="font-display text-h2 font-bold leading-[1.12] tracking-tight2 text-fg">
+      I build interfaces that <span class="text-ac">scale</span> beyond the screen.
+    </h2>
+    <div class="flex flex-col gap-5">
+      <p data-reveal class="text-body-lg leading-[1.85] text-fg2">
+        I'm a Senior Frontend Engineer with deep <strong class="font-semibold text-fg">Angular</strong> experience,
+        working across banking, media and enterprise products. My focus is frontend architecture: component
+        boundaries, reactive state, and design systems that stay maintainable as teams and codebases grow.
+      </p>
+      <p data-reveal class="text-body-lg leading-[1.85] text-fg2">
+        I treat <strong class="font-semibold text-fg">performance and accessibility</strong> as engineering
+        requirements rather than polish, and I work closely with product and design so implementation matches
+        intent. Alongside frontend work I build backend services in Node, NestJS and Rust, and integrate local
+        and hosted LLMs into real product surfaces.
+      </p>
+      <div data-reveal class="flex flex-wrap gap-2 border-t border-t-bd pt-[18px]">
+        {TAGS.map((tag) => <Chip>{tag}</Chip>)}
+      </div>
+    </div>
+  </div>
+</section>
