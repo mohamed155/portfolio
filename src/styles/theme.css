@@ -1,0 +1,145 @@
+/* Terminal Portfolio — Tailwind v4 theme.
+   Copy to src/styles/theme.css. This is the ONLY stylesheet BaseLayout imports.
+   Replaces the design guide's tailwind.config.mjs, which was written for
+   Tailwind v3 (see references/astro-7-deltas.md).
+
+   Import order matters: Tailwind first, tokens second, so tokens.css wins
+   over Preflight on body/scrollbar/selection. */
+
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ---------------------------------------------------------------------------
+   Variants
+   --------------------------------------------------------------------------- */
+
+/* Dark is the default and needs no variant. This one targets paper mode.
+   Deliberately NOT named `dark:` — inverting that would mean writing the
+   default theme as the exception on every single utility. */
+@custom-variant paper (&:where(html[data-theme="light"], html[data-theme="light"] *));
+
+/* Desktop-down breakpoints. The design was authored desktop-first; these are
+   max-width queries, matching references/breakpoints.md exactly.
+
+   NAMED `to-*`, NOT `max-*`. Tailwind already ships max-sm/max-md/max-lg/max-xl
+   at 640/768/1024/1280px. This system's xl/lg/md/sm/xs are 1080/980/900/760/680.
+   Overriding --breakpoint-xl et al. would silently redefine Tailwind's own
+   variants, and every max-* class in the codebase would mean something other
+   than it reads. Keep both vocabularies alive and unambiguous. */
+@custom-variant to-xl (@media (width <= 1080px));
+@custom-variant to-lg (@media (width <=  980px));
+@custom-variant to-md (@media (width <=  900px));
+@custom-variant to-sm (@media (width <=  760px));
+@custom-variant to-xs (@media (width <=  680px));
+
+/* ---------------------------------------------------------------------------
+   Theme
+   --------------------------------------------------------------------------- */
+
+@theme {
+  /* Every colour resolves through a CSS variable so theme switching is a single
+     attribute change on <html> with no class churn. tokens.css owns the values. */
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-fg: var(--fg);
+  --color-fg2: var(--fg2);
+  --color-fg3: var(--fg3);
+  --color-ac: var(--ac);
+  --color-acfg: var(--acFg);
+  --color-acdim: var(--acDim);
+  --color-bd: var(--bd);
+  --color-bd2: var(--bd2);
+
+  --font-display: "Space Mono", ui-monospace, monospace;
+  --font-body: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Fixed scale */
+  --text-micro: 10px;
+  --text-micro--line-height: 1.6;
+  --text-label-sm: 10.5px;
+  --text-label-sm--line-height: 1.6;
+  --text-label: 11.5px;
+  --text-label--line-height: 1.6;
+  --text-ui-sm: 12px;
+  --text-ui-sm--line-height: 1.6;
+  --text-ui: 12.5px;
+  --text-ui--line-height: 1.6;
+  --text-body-xs: 13px;
+  --text-body-xs--line-height: 1.75;
+  --text-body-sm: 13.5px;
+  --text-body-sm--line-height: 1.8;
+  --text-body: 14px;
+  --text-body--line-height: 1.8;
+  --text-body-lg: 14.5px;
+  --text-body-lg--line-height: 1.85;
+  --text-title: 15.5px;
+  --text-title--line-height: 1.15;
+
+  /* Fluid display scale — clamp values lifted from the source. */
+  --text-lead: clamp(14px, 1.7vw, 20px);
+  --text-lead--line-height: 1.6;
+  --text-h4: clamp(19px, 2.1vw, 26px);
+  --text-h4--line-height: 1.14;
+  --text-h3: clamp(21px, 2.6vw, 32px);
+  --text-h3--line-height: 1.15;
+  --text-h2-tight: clamp(22px, 3vw, 36px);
+  --text-h2-tight--line-height: 1.14;
+  --text-h2: clamp(24px, 3.5vw, 44px);
+  --text-h2--line-height: 1.12;
+  --text-display: clamp(28px, 6vw, 76px);
+  --text-display--line-height: 1;
+  --text-hero: clamp(38px, 9.4vw, 132px);
+  --text-hero--line-height: .92;
+
+  --tracking-hero: -.045em;
+  --tracking-heading: -.035em;
+  --tracking-tight2: -.02em;
+  --tracking-title: -.01em;
+  --tracking-ui: .02em;
+  --tracking-nav: .06em;
+  --tracking-caps: .1em;
+  --tracking-caps-wide: .16em;
+  --tracking-caps-widest: .2em;
+
+  /* v4's dynamic spacing scale already covers the design's off-scale steps:
+     p-1.5=6px, p-2.5=10px, p-4.5=18px, p-6.5=26px, py-21=84px. Only the
+     named structural sizes need declaring. */
+  --spacing-header: 58px;
+  --spacing-statusbar: 28px;
+  --spacing-sidebar: 284px;
+
+  /* --container-* drives the max-w-* utilities. */
+  --container-page: 1360px;
+  --container-copy: 62ch;
+  --container-narrow: 56ch;
+  --container-heading: 24ch;
+
+  --ease-print: cubic-bezier(.2, .8, .2, 1);
+
+  /* @keyframes live in tokens.css; these only name the shorthands. */
+  --animate-print: print .5s steps(22, end) both;
+  --animate-print-fast: print .34s steps(16, end) both;
+  --animate-print-slow: print .7s steps(26, end) both;
+  --animate-rise: rise .3s cubic-bezier(.2, .8, .2, 1) both;
+  --animate-fadein: fadein .18s linear both;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-blink-slow: blink 1.4s step-end infinite;
+  --animate-flow: flow 2.4s linear infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities the token namespaces cannot express
+   --------------------------------------------------------------------------- */
+
+/* The 45-degree hatch that stands in for every image in this system. */
+@utility bg-hatch {
+  background-image: var(--hatch);
+}
+
+/* Tailwind v4's default border colour is currentColor, not a grey. A bare
+   `border` class therefore paints the text colour, never the hairline.
+   Write `border border-bd` everywhere, or use this shorthand. */
+@utility hairline {
+  border: 1px solid var(--bd);
+}

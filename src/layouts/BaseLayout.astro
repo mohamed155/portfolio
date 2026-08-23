@@ -1,0 +1,53 @@
+---
+// Level 0 foundation layout. Head, fonts, the blocking theme script, tokens,
+// and a bare slot — nothing visible. PageLayout (header/footer/status-bar
+// chrome) composes this at Level 4; do not add visible markup here.
+import { ClientRouter } from 'astro:transitions';
+import { themeInit } from '../lib/theme-init';
+import '../styles/theme.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+
+    <!-- Blocking, runs before first paint. Must stay before any stylesheet. -->
+    <script is:inline set:html={themeInit} />
+
+    <!-- Preload only what the first screen paints: Space Mono 700, IBM Plex Mono 400. -->
+    <link rel="preload" href="/fonts/space-mono-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @font-face {
+    font-family: "Space Mono";
+    src: url("/fonts/space-mono-700.woff2") format("woff2");
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "IBM Plex Mono";
+    src: url("/fonts/ibm-plex-mono-400.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+</style>

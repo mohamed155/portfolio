@@ -1,11 +1,11 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Level 0 placeholder. Real hero content lands at Level 5 — this page exists
+// only to prove the foundation (theme, fonts, tokens) renders correctly.
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout title="Mohamed Ramadan">
+  <main class="flex min-h-screen items-center justify-center bg-bg text-fg">
+    <p class="font-body text-body">hello</p>
+  </main>
+</BaseLayout>
