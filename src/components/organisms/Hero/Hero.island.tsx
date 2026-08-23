@@ -34,20 +34,33 @@ export default function HeroIntro() {
     if (sessionStorage.getItem('mr-navigated') === '1') return;
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    let started = false;
+    let fallback: ReturnType<typeof setTimeout> | undefined;
+
     const start = () => {
-      // The mount effect below already marked these .is-in, matching the
-      // fully-typed SSR default — undo that so the print stages have
+      // Without this guard, the fallback below still fires even after
+      // `mr:boot-done` already ran start() once, resetting and re-hiding
+      // the hero content again six seconds into a normal load.
+      if (started) return;
+      started = true;
+      if (fallback !== undefined) clearTimeout(fallback);
+
+      // The mount effect below leaves these at their CSS default (visible,
+      // no `is-in`) — mark them `is-out` so the print stages have
       // something to reveal as `printed` climbs back up.
-      document.querySelectorAll<HTMLElement>('[data-hero-reveal]').forEach((el) => el.classList.remove('is-in'));
+      document.querySelectorAll<HTMLElement>('[data-hero-reveal]').forEach((el) => {
+        el.classList.remove('is-in');
+        el.classList.add('is-out');
+      });
       setTi(0); setCi(0); setPrinted(0);
     };
     document.addEventListener('mr:boot-done', start);
     // Failsafe in case the event never arrives.
-    const fallback = setTimeout(start, 6000);
+    fallback = setTimeout(start, 6000);
 
     return () => {
       document.removeEventListener('mr:boot-done', start);
-      clearTimeout(fallback);
+      if (fallback !== undefined) clearTimeout(fallback);
     };
   }, []);
 
@@ -68,7 +81,10 @@ export default function HeroIntro() {
 
   useEffect(() => {
     document.querySelectorAll<HTMLElement>('[data-hero-reveal]').forEach((el, i) => {
-      if (i < printed) el.classList.add('is-in');
+      if (i < printed) {
+        el.classList.remove('is-out');
+        el.classList.add('is-in');
+      }
     });
   }, [printed]);
 
