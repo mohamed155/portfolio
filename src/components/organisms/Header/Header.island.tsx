@@ -96,9 +96,13 @@ export default function HeaderIsland({ active }: { active?: string }) {
   // document-level listener, so our scroll is the only thing that runs.
   function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
     if (window.location.pathname !== '/') return;
+    // Leave modified/non-primary clicks (new tab, new window, save-as) alone.
+    // Keyboard activation also reports button 0, so it still gets caught here.
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     e.stopPropagation();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'instant' : 'smooth' });
   }
 
   return (
