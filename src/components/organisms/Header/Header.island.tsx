@@ -89,12 +89,24 @@ export default function HeaderIsland({ active }: { active?: string }) {
     setTheme(next);
   }
 
+  // On the home page a click on "/" targets the current URL. Left uncaught,
+  // ClientRouter still runs its same-document transition for it, which fights
+  // a plain scrollTo (the browser reports this as a "refresh"-like jump).
+  // stopPropagation keeps the click from ever reaching ClientRouter's own
+  // document-level listener, so our scroll is the only thing that runs.
+  function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (window.location.pathname !== '/') return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-80 animate-print border-b bg-bg ${scrolled ? 'border-bd2' : 'border-bd'}`}
     >
       <div className="mx-auto flex h-header max-w-page items-center gap-6 px-8 to-xs:px-4.5">
-        <a href="/" className="flex min-w-0 items-center gap-2.5 text-ui text-fg hover:text-ac">
+        <a href="/" onClick={handleLogoClick} className="flex min-w-0 items-center gap-2.5 text-ui text-fg hover:text-ac">
           <span className="inline-flex h-[26px] w-[26px] flex-none items-center justify-center bg-ac font-display text-[12px] font-bold text-acfg">MR</span>
           <span className="truncate tracking-ui">mohamed_ramadan</span>
           <span className="text-label tracking-nav text-fg3 to-sm:hidden">/ sr. frontend engineer</span>
