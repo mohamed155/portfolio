@@ -9,6 +9,7 @@ export interface Project {
   slug: string;
   path: string;
   shot: string;
+  image?: string;
   description: string;
   contribution: string;
   tech: string[];
@@ -19,6 +20,7 @@ export const PROJECTS: Project[] = [
   {
     index: '01', kind: 'AI · multi-tenant saas', title: 'AI Customer Service Platform',
     slug: 'ai-customer-service-platform', path: 'app.support / inbox', shot: 'conversation inbox + AI assistant',
+    image: '/images/aria.png',
     description: 'A multi-tenant AI-powered customer-service platform: shared conversation inbox, knowledge base, tenant switching, customer profiles and an admin dashboard, with WhatsApp and Telegram as message channels.',
     contribution: 'Frontend architecture for tenant-scoped state, plus the retrieval-backed assistant surface built on a Rust API with pgvector.',
     tech: ['Angular', 'NgRx', 'Rust', 'Axum', 'PostgreSQL', 'pgvector'],

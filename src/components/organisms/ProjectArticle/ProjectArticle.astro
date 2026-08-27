@@ -11,13 +11,14 @@ interface Props {
   slug: string;
   path: string;
   shot: string;
+  image?: string;
   description: string;
   contribution: string;
   tech: string[];
   flip?: boolean;
 }
 
-const { index, kind, title, slug, path, shot, description, contribution, tech, flip = false } = Astro.props;
+const { index, kind, title, slug, path, shot, image, description, contribution, tech, flip = false } = Astro.props;
 ---
 
 <article data-reveal class="grid grid-cols-[1fr_1fr] items-start gap-[52px] pb-[76px] to-xl:grid-cols-1 to-xl:gap-8">
@@ -40,6 +41,6 @@ const { index, kind, title, slug, path, shot, description, contribution, tech, f
   </div>
 
   <div class:list={[flip ? 'order-1' : 'order-2', 'to-xl:order-2']}>
-    <ScreenshotFrame path={path} caption={shot} ratio="4/3" />
+    <ScreenshotFrame path={path} caption={shot} ratio="4/3" src={image} />
   </div>
 </article>

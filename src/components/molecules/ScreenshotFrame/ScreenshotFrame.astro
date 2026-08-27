@@ -10,7 +10,9 @@ interface Props {
   path: string;              // fake path in the title bar
   caption: string;           // what the shot shows
   ratio?: string;            // '4/3' project · '16/9' hero · '16/10' secondary
-  src?: ImageMetadata;       // omit → hatch placeholder
+  src?: ImageMetadata | string; // ImageMetadata for optimized src/assets imports;
+                                 // string for a public/ path (plain <img>, no
+                                 // pipeline). Omit → hatch placeholder.
   alt?: string;
   loading?: 'eager' | 'lazy';
 }
@@ -32,12 +34,21 @@ const { path, caption, ratio = '4/3', src, alt, loading = 'lazy' } = Astro.props
 
   <div class="relative" style={`aspect-ratio:${ratio}`}>
     {src ? (
-      <Image
-        src={src}
-        alt={alt ?? caption}
-        loading={loading}
-        class="absolute inset-0 h-full w-full object-cover"
-      />
+      typeof src === 'string' ? (
+        <img
+          src={src}
+          alt={alt ?? caption}
+          loading={loading}
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : (
+        <Image
+          src={src}
+          alt={alt ?? caption}
+          loading={loading}
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+      )
     ) : (
       <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-hatch">
         <span class="text-label-sm uppercase tracking-caps-widest text-fg3">screenshot</span>

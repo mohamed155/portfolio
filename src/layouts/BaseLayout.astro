@@ -4,6 +4,7 @@
 // chrome) composes this at Level 4; do not add visible markup here.
 import { ClientRouter } from 'astro:transitions';
 import { themeInit } from '../lib/theme-init';
+import { bootGateInit } from '../lib/boot-gate';
 import '../styles/theme.css';
 
 interface Props {
@@ -24,6 +25,7 @@ const { title, description } = Astro.props;
 
     <!-- Blocking, runs before first paint. Must stay before any stylesheet. -->
     <script is:inline set:html={themeInit} />
+    <script is:inline set:html={bootGateInit} />
 
     <!-- Preload only what the first screen paints: Space Mono 700, IBM Plex Mono 400. -->
     <link rel="preload" href="/fonts/space-mono-700.woff2" as="font" type="font/woff2" crossorigin />
@@ -42,6 +44,11 @@ const { title, description } = Astro.props;
       // Astro keeps the document alive across navigations.
       document.addEventListener('astro:after-swap', () => {
         sessionStorage.setItem('mr-navigated', '1');
+
+        // Astro persists <html> across a swap, so a stale data-boot="run"
+        // from the initial load would otherwise reapply to the fresh
+        // #mr-boot-fallback markup if the user navigates back to "/".
+        document.documentElement.removeAttribute('data-boot');
 
         // ClientRouter swaps <html>'s attributes to match the incoming
         // page's static markup, which never has data-theme baked in (it's

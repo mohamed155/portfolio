@@ -1,10 +1,31 @@
 ---
-// Home page only, must run before first meaningful paint. client:only, not
-// client:load: this component decides whether to render at all from
-// sessionStorage/matchMedia, so its first real render must be the client's —
-// SSR-ing a guess and correcting it on hydrate is a hydration-mismatch bug
-// (see interactivity.md).
+// Home page only, must run before first meaningful paint. The island itself
+// stays client:only, not client:load (see interactivity.md) — but that
+// means it has no SSR output, so without help the already-SSR'd Hero below
+// flashes visible before React's bundle loads and mounts. #mr-boot-fallback
+// is a static stand-in for the island's first frame; data-boot="run" (set
+// synchronously by bootGateInit in BaseLayout's <head>, before this markup
+// is even parsed) is the only thing that makes it visible, so JS-disabled
+// visitors and anyone the boot sequence would skip never see it. The island
+// removes it once it mounts (BootSequence.island.tsx). Its display rules
+// live in tokens.css, not a <style> block here — see that file for why.
 import BootSequenceIsland from './BootSequence.island.tsx';
 ---
+
+<div
+  id="mr-boot-fallback"
+  role="status"
+  aria-label="Loading"
+  class="fixed inset-0 z-[100] flex-col justify-end gap-1 bg-bg p-[clamp(20px,6vw,64px)]"
+>
+  <div class="flex items-baseline gap-3 text-body-xs leading-[1.9] tracking-ui">
+    <span class="text-ac" aria-hidden="true">&gt;</span>
+    <span class="text-fg2">init portfolio.mr</span>
+  </div>
+  <div class="flex items-center gap-3 text-fg">
+    <span class="text-ac">$</span>
+    <span aria-hidden="true" class="inline-block h-[16px] w-[9px] flex-none animate-blink bg-ac" />
+  </div>
+</div>
 
 <BootSequenceIsland client:only="react" />

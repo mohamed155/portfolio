@@ -1,7 +1,7 @@
 // organisms/BootSequence/BootSequence.island.tsx — client:load, home page
 // only. Must run before first meaningful paint. Hand-rolls TerminalLine and
 // Caret markup — a React island can't import the .astro atoms/molecules.
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 const BOOT: [string, string][] = [
   ['init portfolio.mr', ''],
@@ -22,6 +22,15 @@ export default function BootSequenceIsland() {
     return matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
   const [lines, setLines] = useState(1);
+
+  // #mr-boot-fallback (BootSequence.astro) stands in for this component's
+  // first frame until React mounts — runs before paint so there's no
+  // double-frame between the static markup and this one, regardless of how
+  // `done` landed.
+  useLayoutEffect(() => {
+    document.getElementById('mr-boot-fallback')?.remove();
+    document.documentElement.removeAttribute('data-boot');
+  }, []);
 
   useEffect(() => {
     if (done) return;

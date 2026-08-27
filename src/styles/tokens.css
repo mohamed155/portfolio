@@ -104,6 +104,15 @@ html[data-theme="light"] {
 [data-hero-reveal].is-out { opacity: 0 }
 [data-hero-reveal].is-in { opacity: 1; animation: print .5s steps(22, end) both }
 
+/* Static stand-in for BootSequence.island.tsx's first frame (see
+   BootSequence.astro and lib/boot-gate.ts) — a client:only island has no
+   SSR output, so without this the already-SSR'd Hero flashes visible
+   before React mounts. Lives here, not in a component <style> block,
+   because component-level styles (scoped or is:global) don't make it into
+   this project's production CSS bundle. */
+#mr-boot-fallback { display: none }
+html[data-boot='run'] #mr-boot-fallback { display: flex }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;

@@ -33,7 +33,7 @@ const { index, dates, place, company, title, summary, tech = [], current = false
       <span class="mt-[7px] block text-ui leading-[1.6] text-ac">{title}</span>
     </span>
 
-    <span class="to-lg:col-span-2 to-sm:col-span-1">
+    <span class="to-lg:col-span-2 to-sm:col-span-2">
       <span class="block max-w-[62ch] text-body-sm leading-[1.8] text-fg2">{summary}</span>
       <span class="mt-[14px] flex flex-wrap gap-[6px]">
         {tech.map((t) => <Chip size="sm" variant="quiet">{t}</Chip>)}

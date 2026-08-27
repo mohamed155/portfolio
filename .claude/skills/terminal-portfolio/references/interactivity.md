@@ -13,7 +13,16 @@ Four behaviours need JavaScript. Everything else is static `.astro`.
 
 `client:load` still server-renders the component once before hydrating it. A `useState` initializer that branches on `typeof window === 'undefined'` to decide whether to render therefore produces **different output on the server than on the client's first render** — the server takes the `undefined` branch, the client immediately evaluates the real condition. React throws a hydration-mismatch error for exactly this pattern (it's one of the causes listed in React's own mismatch warning: "A server/client branch `if (typeof window !== 'undefined')`"). Discovered building Level 3 — the first real page assembly threw this on every load.
 
-`client:only="react"` skips the SSR pass for this component entirely, so there's nothing to mismatch against — the `window`/`sessionStorage`/`matchMedia` checks in the initializer are then safe exactly as written below. The tradeoff is that the underlying page (which *does* SSR normally) is visible for a brief moment before the boot overlay mounts and covers it; for a full-page takeover overlay that only exists on JS-enabled cold loads of `/`, that's the right side of the tradeoff.
+`client:only="react"` skips the SSR pass for this component entirely, so there's nothing to mismatch against — the `window`/`sessionStorage`/`matchMedia` checks in the initializer are then safe exactly as written below.
+
+That leaves a gap, though: the underlying page (which *does* SSR normally) would otherwise be visible for a brief moment before the boot overlay mounts and covers it. That gap is closed with the same technique the theme flash uses (`lib/theme-init.ts`) — a blocking `<head>` script plus a static stand-in:
+
+- `lib/boot-gate.ts` (`bootGateInit`) runs in `BaseLayout.astro`'s `<head>`, right after `themeInit`. It re-checks the same three conditions synchronously and, only when the boot sequence should actually play, sets `data-boot="run"` on `<html>` before `<body>` is parsed.
+- `BootSequence.astro` renders a static `#mr-boot-fallback` div — plain HTML matching the island's first frame. Its `display: none` / `html[data-boot="run"] #mr-boot-fallback { display: flex }` pair lives in `tokens.css`, **not** a component `<style>` block — scoped and `is:global` component styles alike are silently dropped from this project's production CSS bundle (a pre-existing Tailwind v4 + Vite pipeline quirk, confirmed by `resume.astro`'s own `is:global` print rules also being absent from `astro build` output). Only `tokens.css`/`theme.css` reliably survive the build. JS-disabled visitors and anyone the boot sequence would skip (SPA nav, `prefers-reduced-motion`) never see the fallback.
+- The island removes `#mr-boot-fallback` and the `data-boot` attribute in a `useLayoutEffect` on mount, before its own first paint, regardless of how `done` landed.
+- `BaseLayout.astro`'s `astro:after-swap` handler also clears `data-boot`, since Astro persists `<html>` across View Transitions — otherwise a stale `data-boot="run"` from the cold load would reapply to the fresh fallback markup on a later navigation back to `/`.
+
+This is why the fallback markup must stay a visual match for the island's first frame (`BOOT[0]` plus the prompt) — anything else would swap visibly when the island takes over.
 
 ## View Transitions will replay your mount effects
 
