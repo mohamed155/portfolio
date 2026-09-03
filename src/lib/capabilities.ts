@@ -13,9 +13,9 @@ export interface Capability {
 export const CATS: Capability[] = [
   {
     name: 'Frontend', level: 'Core Specialty', primary: true, lead: 4,
-    blurb: 'The core of my work: Angular applications built with typed, reactive component architecture — signals and RxJS side by side, OnPush by default, and styling systems that stay predictable at scale.',
+    blurb: 'The core of my work: Angular applications built with typed, reactive component architecture — signals and RxJS side by side, OnPush by default, and styling systems that stay predictable at scale. Alongside Angular, five years building React and React Native apps and two years in Flutter for mobile.',
     applied: 'SNB Retailer e-banking apps · AI Customer Service Platform · Retailer/Ads Portal',
-    skills: ['Angular', 'TypeScript', 'JavaScript', 'RxJS', 'Signals', 'React', 'HTML', 'CSS', 'Tailwind CSS'],
+    skills: ['Angular', 'TypeScript', 'JavaScript', 'RxJS', 'Signals', 'React', 'React Native', 'Flutter', 'HTML', 'CSS', 'Tailwind CSS'],
   },
   {
     name: 'Architecture & State', level: 'Core Specialty', primary: true, lead: 3,

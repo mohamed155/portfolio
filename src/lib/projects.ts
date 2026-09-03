@@ -28,6 +28,7 @@ export const PROJECTS: Project[] = [
   {
     index: '02', kind: 'desktop · local-first', title: 'Inventory Desktop Application',
     slug: 'inventory-desktop-application', path: 'Inventory.app — stock', shot: 'stock table + item form', flip: true,
+    image: '/images/IMS.png',
     description: 'Desktop inventory management software built for offline use: local-first storage, dense data entry, validated forms and packaged distribution for real workstation workflows.',
     contribution: 'A typed data layer from SQLite through Prisma into the renderer, and a form system that keeps validation rules in one place.',
     tech: ['Electron', 'React', 'TypeScript', 'Prisma', 'SQLite'],

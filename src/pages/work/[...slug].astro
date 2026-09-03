@@ -1,20 +1,21 @@
 ---
 // Level 5 page. One case study per collection entry, rendered through
 // CaseStudyLayout. `hero.src` / `features[].shot.src` are optional strings
-// in the schema — resolved to ImageMetadata here (not in the template, see
-// content-collections.md's Images section) via import.meta.glob over
-// src/assets. No case study sets a src today, so every screenshot renders
-// the hatch placeholder until real images are added.
+// in the schema — resolved here (not in the template, see
+// content-collections.md's Images section). A path under src/assets is
+// resolved to ImageMetadata via import.meta.glob for the optimized pipeline;
+// a `/images/...` path is a public/ asset and passes through as a plain
+// string, which ScreenshotFrame renders as an unoptimized <img>.
 import { getCollection, render } from 'astro:content';
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{png,jpg,jpeg,webp,avif}');
 
-async function resolve(src?: string): Promise<ImageMetadata | undefined> {
+async function resolve(src?: string): Promise<ImageMetadata | string | undefined> {
   if (!src) return undefined;
   const loader = images[src];
-  if (!loader) return undefined;
-  return (await loader()).default;
+  if (loader) return (await loader()).default;
+  return src;
 }
 
 export async function getStaticPaths() {
