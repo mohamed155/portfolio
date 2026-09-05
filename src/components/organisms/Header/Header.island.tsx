@@ -12,6 +12,7 @@
 //   class=           -> className=       (React island, not an .astro file)
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useActiveSection } from '../../../lib/useActiveSection';
 
 type Theme = 'dark' | 'light';
@@ -106,6 +107,7 @@ export default function HeaderIsland({ active }: { active?: string }) {
   }
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-80 animate-print border-b bg-bg ${scrolled ? 'border-bd2' : 'border-bd'}`}
     >
@@ -159,30 +161,32 @@ export default function HeaderIsland({ active }: { active?: string }) {
           >≡</button>
         </div>
       </div>
-
-      {menu && (
-        <div ref={overlay} role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-90 animate-fadein bg-bg px-4.5 py-6">
-          <button
-            type="button"
-            onClick={() => setMenu(false)}
-            aria-label="Close menu"
-            className="ml-auto flex h-8 w-8 items-center justify-center border border-bd text-fg2"
-          >✕</button>
-          <nav className="mt-8 flex flex-col gap-8">
-            {NAV.map(([n, label], i) => (
-              <a
-                key={n}
-                href={`/#${label}`}
-                onClick={() => setMenu(false)}
-                className="flex animate-rise items-baseline gap-3 font-display text-[20px] font-bold uppercase tracking-heading text-fg"
-                style={{ animationDelay: `${i * 30}ms` }}
-              >
-                <span className="text-micro text-ac">{n}</span>{label}
-              </a>
-            ))}
-          </nav>
-        </div>
-      )}
     </header>
+
+    {menu && createPortal(
+      <div ref={overlay} role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-90 animate-fadein bg-bg px-4.5 py-6">
+        <button
+          type="button"
+          onClick={() => setMenu(false)}
+          aria-label="Close menu"
+          className="ml-auto flex h-8 w-8 items-center justify-center border border-bd text-fg2"
+        >✕</button>
+        <nav className="mt-8 flex flex-col gap-8">
+          {NAV.map(([n, label], i) => (
+            <a
+              key={n}
+              href={`/#${label}`}
+              onClick={() => setMenu(false)}
+              className="flex animate-rise items-baseline gap-3 font-display text-[20px] font-bold uppercase tracking-heading text-fg"
+              style={{ animationDelay: `${i * 30}ms` }}
+            >
+              <span className="text-micro text-ac">{n}</span>{label}
+            </a>
+          ))}
+        </nav>
+      </div>,
+      document.body
+    )}
+    </>
   );
 }

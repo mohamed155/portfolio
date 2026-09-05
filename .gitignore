@@ -32,6 +32,9 @@ Thumbs.db
 # jetbrains setting folder
 .idea/
 
+# playwright MCP debug output (screenshots, snapshots, console logs)
+.playwright-mcp/
+
 # vscode (keep shared workspace config)
 .vscode/*
 !.vscode/extensions.json
