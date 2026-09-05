@@ -13,7 +13,7 @@ export default defineConfig({
   // Required for sitemap, canonical URLs and OG image absolute paths.
   // Set to the real domain before shipping — the sitemap and OG URLs are
   // wrong until then.
-  site: 'https://example.com',
+  site: 'https://mohamed-ramadan.net',
 
   integrations: [
     react(),
