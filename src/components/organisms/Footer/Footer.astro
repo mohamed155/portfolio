@@ -1,5 +1,6 @@
 ---
 import Monogram from '../../molecules/Monogram/Monogram.astro';
+import { SITE } from '../../../lib/site';
 ---
 
 <footer class="border-t border-t-bd2">
@@ -9,9 +10,9 @@ import Monogram from '../../molecules/Monogram/Monogram.astro';
       <span class="text-label tracking-nav text-fg3">mohamed ramadan · senior frontend engineer · built with Astro</span>
     </span>
     <span class="flex gap-4 text-label uppercase tracking-caps">
-      <a href="https://github.com/mohamed155" target="_blank" rel="noopener noreferrer" class="text-ac hover:text-fg">github</a>
-      <a href="https://www.linkedin.com/in/mohamed-ahmed-ramadan" target="_blank" rel="noopener noreferrer" class="text-ac hover:text-fg">linkedin</a>
-      <a href="mailto:mohamedahmedramadan154@gmail.com" class="text-ac hover:text-fg">email</a>
+      <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="text-ac hover:text-fg">github</a>
+      <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-ac hover:text-fg">linkedin</a>
+      <a href={`mailto:${SITE.email}`} class="text-ac hover:text-fg">email</a>
     </span>
   </div>
 </footer>

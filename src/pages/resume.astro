@@ -9,10 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Chip from '../components/atoms/Chip/Chip.astro';
 import { ROLES, EDUCATION } from '../lib/roles';
 import { CATS } from '../lib/capabilities';
-
-const EMAIL = 'mohamedahmedramadan154@gmail.com';
-const GITHUB = 'https://github.com/mohamed155';
-const LINKEDIN = 'https://www.linkedin.com/in/mohamed-ahmed-ramadan';
+import { SITE } from '../lib/site';
 ---
 
 <BaseLayout title="Résumé — Mohamed Ramadan" description="Senior Frontend Engineer — experience, capabilities and education.">
@@ -34,9 +31,9 @@ const LINKEDIN = 'https://www.linkedin.com/in/mohamed-ahmed-ramadan';
         <p class="mt-1 text-body-sm text-fg3">Alexandria, Egypt · remote-friendly</p>
       </div>
       <div class="flex flex-col items-end gap-1.5 text-body-sm text-fg2">
-        <a href={`mailto:${EMAIL}`} class="border-b border-b-bd2">{EMAIL}</a>
-        <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="border-b border-b-bd2">github.com/mohamed155</a>
-        <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" class="border-b border-b-bd2">linkedin.com/in/mohamedahmed-ramadan</a>
+        <a href={`mailto:${SITE.email}`} class="border-b border-b-bd2">{SITE.email}</a>
+        <a href={SITE.github} target="_blank" rel="noopener noreferrer" class="border-b border-b-bd2">github.com/mohamed155</a>
+        <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="border-b border-b-bd2">linkedin.com/in/mohamedahmed-ramadan</a>
       </div>
     </header>
 

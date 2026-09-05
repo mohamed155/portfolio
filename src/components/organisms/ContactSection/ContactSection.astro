@@ -2,8 +2,7 @@
 import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
 import Badge from '../../atoms/Badge/Badge.astro';
 import Button from '../../atoms/Button/Button.astro';
-
-const EMAIL = 'mohamedahmedramadan154@gmail.com';
+import { SITE } from '../../../lib/site';
 ---
 
 <section id="contact" data-section="contact" class="pb-24">
@@ -23,14 +22,14 @@ const EMAIL = 'mohamedahmedramadan154@gmail.com';
 
   <a
     data-reveal
-    href={`mailto:${EMAIL}`}
+    href={`mailto:${SITE.email}`}
     class="mt-[26px] inline-block break-all text-[clamp(13px,2.2vw,26px)] tracking-title text-ac border-b border-b-bd2"
-  >{EMAIL}</a>
+  >{SITE.email}</a>
 
   <div data-reveal class="mt-10 flex flex-wrap gap-[10px]">
-    <Button href={`mailto:${EMAIL}`}>email me &rarr;</Button>
-    <Button variant="outline" href="https://www.linkedin.com/in/mohamed-ahmed-ramadan" target="_blank" rel="noopener noreferrer">linkedin &#8599;</Button>
-    <Button variant="outline" href="https://github.com/mohamed155" target="_blank" rel="noopener noreferrer">github &#8599;</Button>
+    <Button href={`mailto:${SITE.email}`}>email me &rarr;</Button>
+    <Button variant="outline" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">linkedin &#8599;</Button>
+    <Button variant="outline" href={SITE.github} target="_blank" rel="noopener noreferrer">github &#8599;</Button>
     <Button variant="ghost" href="/resume">resume &#8599;</Button>
   </div>
 </section>
