@@ -6,4 +6,5 @@ export const SITE = {
   email: 'mohamedahmedramadan154@gmail.com',
   github: 'https://github.com/mohamed155',
   linkedin: 'https://www.linkedin.com/in/mohamed-ahmed-ramadan',
+  resume: 'https://drive.google.com/file/d/1JTkezq7VtzipKd-Dh3PjRgJrMdgU3M-C/view?usp=sharing'
 } as const;

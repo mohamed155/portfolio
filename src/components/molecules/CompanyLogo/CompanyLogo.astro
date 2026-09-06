@@ -1,0 +1,53 @@
+---
+// Brand mark for an ExperienceRow. Each source file is a solid-black glyph
+// on a transparent PNG (see companyLogos.ts) — rather than drawing those
+// pixels directly, it's used as a CSS mask over a solid accent fill, so the
+// mark recolours itself with the live theme accent instead of importing
+// each brand's own colour. A company with no sourced logo gets a bordered
+// letter-mark instead.
+import { COMPANY_LOGOS } from '../../../lib/companyLogos';
+
+interface Props {
+  company: string;
+  class?: string;
+}
+
+const { company, class: className } = Astro.props;
+const src = COMPANY_LOGOS[company];
+const initial = company.trim().charAt(0).toUpperCase();
+
+const maskStyle = src
+  ? `--logo-src:url(${JSON.stringify(src)});mask-image:var(--logo-src);-webkit-mask-image:var(--logo-src);`
+  : undefined;
+---
+
+{
+  src ? (
+    <span class:list={['inline-flex h-20 w-20 flex-none items-center justify-center border border-bd bg-transparent', className]}>
+      <span
+        class="mask-contain h-16 w-16 bg-ac"
+        style={maskStyle}
+        aria-hidden="true"
+      />
+    </span>
+  ) : (
+    <span
+      class:list={['inline-flex h-20 w-20 flex-none items-center justify-center border border-bd bg-panel font-display text-[28px] font-bold text-fg2', className]}
+      aria-hidden="true"
+    >
+      {initial}
+    </span>
+  )
+}
+
+<style>
+  .mask-contain {
+    display: block;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+</style>

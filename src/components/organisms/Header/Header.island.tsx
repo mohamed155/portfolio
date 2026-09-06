@@ -24,11 +24,14 @@ const NAV: [string, string][] = [
 
 export default function HeaderIsland({ active }: { active?: string }) {
   // On the home page, [data-section] markers exist and this tracks scroll
-  // position live. Everywhere else (case studies, /work, /404, /resume) there
-  // are none, so the hook stays undefined and the page's own static `active`
-  // prop — e.g. CaseStudyLayout always passing "work" — decides the highlight.
-  const scrollActive = useActiveSection();
-  const activeLabel = scrollActive ?? active;
+  // position live — once `hasSections` is true, scrollActive alone decides
+  // the highlight, including undefined (above the hero, or a section-less
+  // gap like Also Shipped) meaning "highlight nothing". Everywhere else
+  // (case studies, /work, /404, /resume) there are no markers, so
+  // `hasSections` stays false and the page's own static `active` prop — e.g.
+  // CaseStudyLayout always passing "work" — decides the highlight instead.
+  const { section: scrollActive, hasSections } = useActiveSection();
+  const activeLabel = hasSections ? scrollActive : active;
   // Always starts 'dark', matching what client:load's SSR pass renders
   // (document doesn't exist there). Reading the real value in the
   // initializer instead would make the client's first render disagree with

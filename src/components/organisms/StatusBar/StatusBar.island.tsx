@@ -12,7 +12,7 @@ const DISPLAY = new Map(SECTIONS);
 export default function StatusBarIsland({ path = '~/portfolio' }: { path?: string }) {
   const [hidden, setHidden] = useState(true);
   const [percent, setPercent] = useState(0);
-  const section = useActiveSection(!hidden);
+  const { section } = useActiveSection(!hidden);
 
   useEffect(() => {
     const mq = matchMedia('(max-width: 760px)');
