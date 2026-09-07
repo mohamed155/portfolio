@@ -5,14 +5,23 @@
 import { ClientRouter } from 'astro:transitions';
 import { themeInit } from '../lib/theme-init';
 import { bootGateInit } from '../lib/boot-gate';
+import { SITE } from '../lib/site';
 import '../styles/theme.css';
 
 interface Props {
   title: string;
   description?: string;
+  /** Root-relative or absolute path to the social preview image. Defaults to the sitewide card. */
+  image?: string;
+  /** Open Graph type — 'website' for index-style pages, 'article' for case studies. */
+  type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = '/og-image.png', type = 'website', noindex = false } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -22,6 +31,24 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageURL} />
 
     <!-- Blocking, runs before first paint. Must stay before any stylesheet. -->
     <script is:inline set:html={themeInit} />

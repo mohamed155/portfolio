@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /kitchen-sink
+
+Sitemap: https://mohamed-ramadan.net/sitemap-index.xml

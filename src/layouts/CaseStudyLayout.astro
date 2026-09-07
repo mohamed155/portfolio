@@ -15,6 +15,7 @@
 // astro:page-load — nothing extra to wire up here.
 import type { CollectionEntry } from 'astro:content';
 import PageLayout from './PageLayout.astro';
+import { SITE } from '../lib/site';
 import CaseStudyHero from '../components/organisms/CaseStudyHero/CaseStudyHero.astro';
 import ContextGrid from '../components/organisms/ContextGrid/ContextGrid.astro';
 import ChallengeList from '../components/organisms/ChallengeList/ChallengeList.astro';
@@ -39,9 +40,27 @@ interface Props {
 
 const { data } = Astro.props;
 const [feature1, feature2] = data.features;
+
+const heroImage = typeof data.hero.src === 'string' ? data.hero.src : data.hero.src?.src;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: data.title,
+  description: data.lead,
+  author: { '@type': 'Person', name: SITE.name, url: Astro.site?.toString() },
+  ...(heroImage && { image: new URL(heroImage, Astro.site).toString() }),
+};
 ---
 
-<PageLayout title={`${data.title} — Case Study — Mohamed Ramadan`} description={data.lead} active="work">
+<PageLayout
+  title={`${data.title} — Case Study — Mohamed Ramadan`}
+  description={data.lead}
+  active="work"
+  image={heroImage}
+  type="article"
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   <CaseStudyHero
     index={data.index}
     kind={data.kind}

@@ -20,12 +20,15 @@ interface Props {
   title: string;
   description?: string;
   active?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
 }
 
-const { title, description, active } = Astro.props;
+const { title, description, active, image, type, noindex } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={image} type={type} noindex={noindex}>
   <Header active={active} />
   <main class="mx-auto max-w-page px-8 pt-header to-xs:px-4.5">
     <slot />

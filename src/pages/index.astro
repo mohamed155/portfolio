@@ -12,6 +12,16 @@ import SelectedWork from '../components/organisms/SelectedWork/SelectedWork.astr
 import AlsoShipped from '../components/organisms/AlsoShipped/AlsoShipped.astro';
 import Education from '../components/organisms/Education/Education.astro';
 import ContactSection from '../components/organisms/ContactSection/ContactSection.astro';
+import { SITE } from '../lib/site';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: Astro.site?.toString(),
+  jobTitle: 'Senior Frontend Engineer',
+  sameAs: [SITE.github, SITE.linkedin],
+};
 ---
 
 <PageLayout
@@ -19,6 +29,7 @@ import ContactSection from '../components/organisms/ContactSection/ContactSectio
   description="Senior frontend engineer specializing in Angular, frontend architecture, and scalable design systems."
   active="about"
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   <BootSequence />
   <Hero />
   <About />
