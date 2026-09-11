@@ -1,8 +1,10 @@
 // organisms/Hero/Hero.island.tsx — client:load, home page only. Owns the
-// typed intro (prompt → name → role/tagline) and the print-stage reveal of
-// the four blocks below it. Hand-rolls the caret markup — a React island
-// can't import the Caret .astro atom.
-import { useEffect, useState } from 'react';
+// typed intro (prompt → name → role/tagline), the print-stage reveal of
+// the four blocks below it, and the ASCII scene cycler beside the name.
+// Hand-rolls the caret markup — a React island can't import the Caret
+// .astro atom.
+import { useEffect, useRef, useState } from 'react';
+import { startHeroArt } from '../../../lib/hero-art';
 
 const TYPE = [
   { text: 'whoami', speed: 52, pause: 320 },
@@ -23,6 +25,9 @@ export default function HeroIntro() {
   const [ti, setTi] = useState<number>(TYPE.length);
   const [ci, setCi] = useState(0);
   const [printed, setPrinted] = useState(PRINTS);
+
+  const artRef = useRef<HTMLPreElement>(null);
+  const artStopRef = useRef<(() => void) | null>(null);
 
   // Decide once, after mount, whether to replay the intro: only on a cold
   // load of '/', only when reduced motion isn't requested, and only after
@@ -88,6 +93,24 @@ export default function HeroIntro() {
     });
   }, [printed]);
 
+  // The art starts once the name and role/tagline have finished typing —
+  // same gate as the source design. On a cold load ti already starts at
+  // TYPE.length (see the comment on its useState above), so this fires
+  // immediately; on a replay it stops and clears while ti climbs back up,
+  // then restarts fresh once typing completes again.
+  useEffect(() => {
+    if (ti < TYPE.length) {
+      artStopRef.current?.();
+      artStopRef.current = null;
+      if (artRef.current) artRef.current.innerHTML = '';
+      return;
+    }
+    if (artStopRef.current || !artRef.current) return;
+    artStopRef.current = startHeroArt(artRef.current);
+  }, [ti]);
+
+  useEffect(() => () => artStopRef.current?.(), []);
+
   function typed(i: number) {
     if (ti > i) return TYPE[i].text;
     if (ti === i) return TYPE[i].text.slice(0, ci);
@@ -103,17 +126,25 @@ export default function HeroIntro() {
         )}
       </div>
 
-      <h1 className="mt-[22px] font-display text-hero font-bold uppercase leading-[.92] tracking-hero">
-        {typed(1)}
-        {ti === 1 && (
-          <span aria-hidden="true" className="inline-block h-[.72em] w-[.46em] align-[-.02em] animate-blink bg-ac" />
-        )}
-        <br />
-        {typed(2)}
-        {ti === 2 && (
-          <span aria-hidden="true" className="inline-block h-[.72em] w-[.46em] align-[-.02em] animate-blink bg-ac" />
-        )}
-      </h1>
+      <div className="mt-[22px] grid grid-cols-[minmax(0,1.06fr)_minmax(0,.94fr)] items-center gap-10 to-md:grid-cols-1 to-md:gap-[26px]">
+        <h1 className="font-display text-hero font-bold uppercase leading-[.92] tracking-hero">
+          {typed(1)}
+          {ti === 1 && (
+            <span aria-hidden="true" className="inline-block h-[.72em] w-[.46em] align-[-.02em] animate-blink bg-ac" />
+          )}
+          <br />
+          {typed(2)}
+          {ti === 2 && (
+            <span aria-hidden="true" className="inline-block h-[.72em] w-[.46em] align-[-.02em] animate-blink bg-ac" />
+          )}
+        </h1>
+
+        <pre
+          ref={artRef}
+          aria-hidden="true"
+          className="m-0 select-none overflow-hidden whitespace-pre text-center font-body text-[clamp(11px,1.16vw,14px)] leading-[1.05] tracking-[.055em] text-fg2 to-md:justify-self-center to-md:text-[min(2.8vw,13px)]"
+        />
+      </div>
 
       <div className="mt-[26px] flex flex-wrap items-baseline gap-[14px] border-b border-b-bd2 pb-[26px]">
         <span className="text-lead tracking-ui text-ac">
