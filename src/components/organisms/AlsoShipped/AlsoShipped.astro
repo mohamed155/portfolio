@@ -132,13 +132,17 @@ const ITEMS: Item[] = [
   <SectionHeader index="05" title="also shipped" meta="client work" class="mb-9" />
   <div class="grid grid-cols-3 gap-4 to-sm:grid-cols-1">
     {ITEMS.map((item) => {
+      const Tag = item.href ? 'a' : 'div';
       return (
-      <a
+      <Tag
         data-reveal
-        href={item.href || 'javascript:void(0)'}
+        href={item.href || undefined}
         target={item.href ? '_blank' : undefined}
         rel={item.href ? 'noopener noreferrer' : undefined}
-        class="group flex flex-col border border-bd text-fg transition-colors duration-200 hover:border-ac hover:bg-panel"
+        class:list={[
+          'group flex flex-col border border-bd text-fg transition-colors duration-200 hover:border-ac hover:bg-panel',
+          !item.href && 'cursor-pointer',
+        ]}
       >
         <span
           class="relative flex aspect-video flex-col items-center justify-center gap-3 border-b border-b-bd bg-hatch">
@@ -163,7 +167,7 @@ const ITEMS: Item[] = [
               <Chip variant="quiet" size="sm">{t}</Chip>)}
           </span>
         </span>
-      </a>
+      </Tag>
       );
     })}
   </div>

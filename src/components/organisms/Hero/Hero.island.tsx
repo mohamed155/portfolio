@@ -142,11 +142,11 @@ export default function HeroIntro() {
         <pre
           ref={artRef}
           aria-hidden="true"
-          className="m-0 select-none overflow-hidden whitespace-pre text-center font-body text-[clamp(11px,1.16vw,14px)] leading-[1.05] tracking-[.055em] text-fg2 to-md:justify-self-center to-md:text-[min(2.8vw,13px)]"
+          className="m-0 h-[24.15em] select-none overflow-hidden whitespace-pre text-center font-body text-[clamp(11px,1.16vw,14px)] leading-[1.05] tracking-[.055em] text-fg2 to-md:justify-self-center to-md:text-[min(2.8vw,13px)]"
         />
       </div>
 
-      <div className="mt-[26px] flex flex-wrap items-baseline gap-[14px] border-b border-b-bd2 pb-[26px]">
+      <div className="mt-[26px] flex min-h-[clamp(49.4px,calc(2.72vw+27px),59px)] flex-wrap items-baseline gap-[14px] border-b border-b-bd2 pb-[26px]">
         <span className="text-lead tracking-ui text-ac">
           {typed(3)}
           {ti === 3 && (
