@@ -6,7 +6,8 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 const BOOT: [string, string][] = [
   ['init portfolio.mr', ''],
   ['load profile: mohamed ramadan', 'ok'],
-  ['resolve stack: angular / typescript / rxjs', 'ok'],
+  ['resolve stack: rust / postgres / angular', 'ok'],
+  ['load decisions: 16 adrs', 'ok'],
   ['mount sections [07]', 'ok'],
   ['experience 7+ yrs · 11 roles', 'ok'],
   ['render', 'ready'],

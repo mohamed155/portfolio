@@ -21,9 +21,9 @@ export const PROJECTS: Project[] = [
     index: '01', kind: 'AI · multi-tenant saas', title: 'AI Customer Service Platform',
     slug: 'ai-customer-service-platform', path: 'app.support / inbox', shot: 'conversation inbox + AI assistant',
     image: '/images/aria.png',
-    description: 'A multi-tenant AI-powered customer-service platform: shared conversation inbox, knowledge base, tenant switching, customer profiles and an admin dashboard, with WhatsApp and Telegram as message channels.',
-    contribution: 'Frontend architecture for tenant-scoped state, plus the retrieval-backed assistant surface built on a Rust API with pgvector.',
-    tech: ['Angular', 'NgRx', 'Rust', 'Axum', 'PostgreSQL', 'pgvector'],
+    description: 'A multi-tenant AI customer-service platform: businesses configure AI agents, knowledge bases and integrations, and serve their customers through an embeddable chat widget and WhatsApp, with human handoff when the AI cannot help.',
+    contribution: 'The system architecture, end to end: a Rust modular monolith of 23 domain modules, tenancy on Row-Level Security, a transactional outbox, and the Angular dashboard — recorded in 16 ADRs.',
+    tech: ['Rust', 'Axum', 'PostgreSQL', 'pgvector', 'Redis', 'Angular', 'NgRx'],
   },
   {
     index: '02', kind: 'desktop · local-first', title: 'Inventory Desktop Application',

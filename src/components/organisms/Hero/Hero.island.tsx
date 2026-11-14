@@ -11,7 +11,7 @@ const TYPE = [
   { text: 'MOHAMED', speed: 62, pause: 90 },
   { text: 'RAMADAN', speed: 62, pause: 280 },
   { text: 'senior software engineer', speed: 22, pause: 160 },
-  { text: '// building scalable digital experiences', speed: 14, pause: 220 },
+  { text: '// system design, from schema to interface', speed: 14, pause: 220 },
 ] as const;
 
 const PRINTS = 4;

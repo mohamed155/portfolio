@@ -26,14 +26,14 @@ export default function CapabilitiesIsland() {
       <div data-reveal className="mb-8 flex items-baseline gap-[18px] border-b border-b-bd pb-[14px]">
         <span className="text-[11px] tracking-caps text-ac">02</span>
         <h2 className="font-display text-body-xs font-bold uppercase tracking-caps-widest text-fg">capabilities</h2>
-        <span className="ml-auto text-label-sm tracking-caps text-fg3">06 domains</span>
+        <span className="ml-auto text-label-sm tracking-caps text-fg3">{String(CATS.length).padStart(2, '0')} domains</span>
       </div>
 
       <h3 data-reveal className="m-0 max-w-[24ch] font-display text-h2-tight font-bold leading-[1.14] tracking-heading text-fg">
-        Specialized engineering capabilities.
+        Architecture across the whole stack.
       </h3>
       <p data-reveal className="mt-4 max-w-[66ch] text-body leading-[1.8] text-fg2">
-        Grouped by engineering domain. Frontend architecture is the primary specialty; full-stack and AI are supporting capabilities.
+        Grouped by engineering domain. System design and frontend architecture are the core specialties; the rest is what it takes to build what I design.
       </p>
 
       <div className="mt-10 grid grid-cols-[284px_1fr] border border-bd to-lg:grid-cols-1">

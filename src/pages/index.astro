@@ -19,14 +19,15 @@ const structuredData = {
   '@type': 'Person',
   name: SITE.name,
   url: Astro.site?.toString(),
-  jobTitle: 'Senior Frontend Engineer',
+  jobTitle: 'Senior Software Engineer',
+  knowsAbout: ['Software architecture', 'System design', 'Multi-tenant SaaS', 'Rust', 'PostgreSQL', 'Angular'],
   sameAs: [SITE.github, SITE.linkedin],
 };
 ---
 
 <PageLayout
-  title="Mohamed Ramadan — Senior Frontend Engineer"
-  description="Senior frontend engineer specializing in Angular, frontend architecture, and scalable design systems."
+  title="Mohamed Ramadan — Senior Software Engineer & System Design"
+  description="Senior software engineer. System design for multi-tenant SaaS: Rust modular monoliths, PostgreSQL, event-driven backends and Angular frontend architecture."
   active="about"
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />

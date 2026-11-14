@@ -5,28 +5,33 @@
 import SectionHeader from '../../molecules/SectionHeader/SectionHeader.astro';
 import Chip from '../../atoms/Chip/Chip.astro';
 
-const TAGS = ['Angular', 'React', 'React Native', 'Flutter', 'TypeScript', 'Design Systems', 'Performance', 'Accessibility', 'Rust', 'LLM Integration'];
+const TAGS = ['System Design', 'Modular Monolith', 'Multi-tenancy', 'Event-driven', 'Rust', 'PostgreSQL', 'Angular', 'TypeScript', 'Observability', 'LLM Integration'];
 ---
 
 <section id="about" data-section="about" class="py-[84px]">
   <SectionHeader index="01" title="about" meta="background.md" class="mb-11" />
   <div class="grid grid-cols-[1.05fr_.95fr] items-start gap-[60px] to-lg:grid-cols-1 to-lg:gap-7">
     <h2 data-reveal class="font-display text-h2 font-bold leading-[1.12] tracking-tight2 text-fg">
-      I build interfaces that <span class="text-ac">scale</span> beyond the screen.
+      I design systems that stay <span class="text-ac">legible</span> as they grow.
     </h2>
     <div class="flex flex-col gap-5">
       <p data-reveal class="text-body-lg leading-[1.85] text-fg2">
-        I'm a Senior Frontend Engineer with deep <strong class="font-semibold text-fg">Angular</strong> experience,
-        working across banking, media and enterprise products. I also bring five years building production
-        <strong class="font-semibold text-fg">React and React Native</strong> apps and two years in
-        <strong class="font-semibold text-fg">Flutter</strong> for mobile. My focus is frontend architecture:
-        component boundaries, reactive state, and design systems that stay maintainable as teams and codebases grow.
+        My job titles say senior frontend engineer. The work has been
+        <strong class="font-semibold text-fg">architecture</strong>: where state lives, which module owns a
+        rule, what crosses a boundary and what never does. I have done that in Angular for banking, media
+        and telecom products, with five years of React and React Native and two of Flutter alongside.
       </p>
       <p data-reveal class="text-body-lg leading-[1.85] text-fg2">
-        I treat <strong class="font-semibold text-fg">performance and accessibility</strong> as engineering
-        requirements rather than polish, and I work closely with product and design so implementation matches
-        intent. Alongside frontend work I build backend services in Node, NestJS and Rust, and integrate local
-        and hosted LLMs into real product surfaces.
+        On the AI Customer Service Platform I designed the whole system: a
+        <strong class="font-semibold text-fg">Rust modular monolith</strong> with hexagonal modules,
+        multi-tenancy on PostgreSQL Row-Level Security, a transactional outbox, circuit breakers around every
+        AI provider, and one binary that runs as api, gateway or worker. Each of those choices is an
+        <strong class="font-semibold text-fg">architecture decision record</strong> with the rejected
+        alternatives written beside it.
+      </p>
+      <p data-reveal class="text-body-lg leading-[1.85] text-fg2">
+        I treat security, tenant isolation and operability as design inputs. A threat model, load tests,
+        backup and restore scripts and runbooks ship with the code.
       </p>
       <div data-reveal class="flex flex-wrap gap-2 border-t border-t-bd pt-[18px]">
         {TAGS.map((tag) => <Chip>{tag}</Chip>)}
