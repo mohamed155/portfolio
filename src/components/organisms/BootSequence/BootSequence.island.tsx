@@ -9,7 +9,7 @@ const BOOT: [string, string][] = [
   ['resolve stack: rust / postgres / angular', 'ok'],
   ['load decisions: 16 adrs', 'ok'],
   ['mount sections [07]', 'ok'],
-  ['experience 7+ yrs · 11 roles', 'ok'],
+  ['experience 8+ yrs · 11 roles', 'ok'],
   ['render', 'ready'],
 ];
 
