@@ -118,7 +118,7 @@ export default function HeaderIsland({ active }: { active?: string }) {
         <a href="/" onClick={handleLogoClick} className="flex min-w-0 items-center gap-2.5 text-ui text-fg hover:text-ac">
           <span className="inline-flex h-[26px] w-[26px] flex-none items-center justify-center bg-ac font-display text-[12px] font-bold text-acfg">MR</span>
           <span className="truncate tracking-ui">mohamed_ramadan</span>
-          <span className="text-label tracking-nav text-fg3 to-sm:hidden">/ sr. software engineer</span>
+          <span className="text-label tracking-nav text-fg3 to-sm:hidden">/ sr. ai software engineer</span>
         </a>
 
         <nav aria-label="Sections" className="ml-auto flex gap-0.5 to-sm:hidden">

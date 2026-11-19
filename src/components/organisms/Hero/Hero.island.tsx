@@ -10,7 +10,7 @@ const TYPE = [
   { text: 'whoami', speed: 52, pause: 320 },
   { text: 'MOHAMED', speed: 62, pause: 90 },
   { text: 'RAMADAN', speed: 62, pause: 280 },
-  { text: 'senior software engineer', speed: 22, pause: 160 },
+  { text: 'senior ai software engineer', speed: 22, pause: 160 },
   { text: '// system design, from schema to interface', speed: 14, pause: 220 },
 ] as const;
 

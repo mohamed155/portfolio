@@ -1,6 +1,6 @@
 # Terminal Portfolio
 
-Personal portfolio and case-study site for Mohamed Ramadan — Senior Software Engineer.
+Personal portfolio and case-study site for Mohamed Ramadan — Senior AI Software Engineer.
 
 The design is terminal-inspired: two monospaced typefaces, zero rounded corners, hairline
 rules instead of shadows, one high-chroma accent on a near-black (or paper) field, and
