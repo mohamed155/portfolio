@@ -30,7 +30,7 @@ export default function CapabilitiesIsland() {
       </div>
 
       <h3 data-reveal className="m-0 max-w-[24ch] font-display text-h2-tight font-bold leading-[1.14] tracking-heading text-fg">
-        Architecture across the whole stack.
+        Architecture across the whole stack
       </h3>
       <p data-reveal className="mt-4 max-w-[66ch] text-body leading-[1.8] text-fg2">
         Grouped by engineering domain. System design and frontend architecture are the core specialties; the rest is what it takes to build what I design.

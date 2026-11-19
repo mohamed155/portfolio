@@ -9,7 +9,6 @@ import Panel from '../../molecules/Panel/Panel.astro';
 import ProfilePanel from '../ProfilePanel/ProfilePanel.astro';
 import HighlightsStrip from '../HighlightsStrip/HighlightsStrip.astro';
 import HeroIntro from './Hero.island.tsx';
-import { SITE } from '../../../lib/site';
 ---
 
 <section id="top" class="pt-[72px]">
@@ -30,8 +29,7 @@ import { SITE } from '../../../lib/site';
 
       <div data-hero-reveal class="mt-[28px] flex flex-wrap gap-[10px]">
         <Button href="#work">explore work &rarr;</Button>
-        <Button variant="outline" href={SITE.resume}>download resume</Button>
-        <Button variant="ghost" href="#contact">let&rsquo;s talk</Button>
+        <Button variant="outline" href="#contact">let&rsquo;s talk</Button>
       </div>
     </div>
 
